@@ -1,3 +1,2 @@
-%%writefile streamlit_project/requirements.txt
 streamlit
 pythermalcomfort
