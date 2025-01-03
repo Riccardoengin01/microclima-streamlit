@@ -1,6 +1,3 @@
-import os
-os.system('pip install pythermalcomfort')
-
 import streamlit as st
 from pythermalcomfort.models import pmv_ppd
 
@@ -9,15 +6,18 @@ def calcola_microclima(temp_aria, umidita, vel_aria, metabolismo, isolamento):
     """
     Calcola PMV e PPD basati sui parametri forniti.
     """
-    risultato = pmv_ppd(
-        tdb=temp_aria,    # Temperatura dell'aria secca (°C)
-        tr=temp_aria,     # Temperatura radiante media (assunta uguale a tdb)
-        vr=vel_aria,      # Velocità relativa dell'aria (m/s)
-        rh=umidita,       # Umidità relativa (%)
-        met=metabolismo,  # Metabolismo (Met)
-        clo=isolamento    # Isolamento termico (Clo)
-    )
-    return risultato
+    try:
+        risultato = pmv_ppd(
+            tdb=temp_aria,    # Temperatura dell'aria secca (°C)
+            tr=temp_aria,     # Temperatura radiante media (assunta uguale a tdb)
+            vr=vel_aria,      # Velocità relativa dell'aria (m/s)
+            rh=umidita,       # Umidità relativa (%)
+            met=metabolismo,  # Metabolismo (Met)
+            clo=isolamento    # Isolamento termico (Clo)
+        )
+        return risultato
+    except Exception as e:
+        return {"pmv": None, "ppd": None, "error": str(e)}
 
 # Interfaccia utente con Streamlit
 st.title("Analisi del Microclima Ufficio")
@@ -37,23 +37,29 @@ isolamento = st.sidebar.number_input("Isolamento termico (Clo):", min_value=0.0,
 # Bottone per calcolare i risultati
 if st.button("Calcola"):
     risultati = calcola_microclima(temp_aria, umidita, vel_aria, metabolismo, isolamento)
-    pmv = risultati['pmv']
-    ppd = risultati['ppd']
 
-    # Mostra i risultati
-    st.subheader("Risultati")
-    st.write(f"**Indice PMV:** {pmv:.2f}")
-    st.write(f"**Indice PPD:** {ppd:.2f}%")
+    if risultati["pmv"] is not None and risultati["ppd"] is not None:
+        pmv = risultati["pmv"]
+        ppd = risultati["ppd"]
 
-    # Interpretazione dei risultati
-    if pmv < -0.5:
-        st.warning("Comfort termico troppo freddo. Consigli: aumentare la temperatura.")
-    elif pmv > 0.5:
-        st.warning("Comfort termico troppo caldo. Consigli: abbassare la temperatura.")
+        # Mostra i risultati
+        st.subheader("Risultati")
+        st.write(f"**Indice PMV:** {pmv:.2f}")
+        st.write(f"**Indice PPD:** {ppd:.2f}%")
+
+        # Interpretazione dei risultati
+        if pmv < -0.5:
+            st.warning("Comfort termico troppo freddo. Consigli: aumentare la temperatura.")
+        elif pmv > 0.5:
+            st.warning("Comfort termico troppo caldo. Consigli: abbassare la temperatura.")
+        else:
+            st.success("Comfort termico accettabile.")
+
+        if ppd > 10:
+            st.error(f"PPD alto ({ppd:.2f}%): molte persone potrebbero non essere soddisfatte.")
+        else:
+            st.success("La maggior parte delle persone è soddisfatta del comfort termico.")
     else:
-        st.success("Comfort termico accettabile.")
+        st.error(f"Errore durante il calcolo: {risultati['error']}")
 
-    if ppd > 10:
-        st.error(f"PPD alto ({ppd:.2f}%): molte persone potrebbero non essere soddisfatte.")
-    else:
-        st.success("La maggior parte delle persone è soddisfatta del comfort termico.")
+
