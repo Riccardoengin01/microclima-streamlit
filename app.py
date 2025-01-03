@@ -1,111 +1,90 @@
 import os
-os.system('pip install pythermalcomfort fpdf matplotlib')
+os.system('pip install pythermalcomfort matplotlib fpdf')
 
 import streamlit as st
 from pythermalcomfort.models import pmv_ppd
+from pythermalcomfort.utilities import clo_dynamic, v_relative
 from fpdf import FPDF
 import matplotlib.pyplot as plt
 
 # Funzione per calcolare PMV e PPD
-def calcola_microclima(temp_aria, umidita, vel_aria, metabolismo, isolamento):
+def calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento):
     """
-    Calcola PMV e PPD basati sui parametri forniti.
+    Calcola PMV e PPD secondo UNI EN ISO 7730 e converte i valori per il D.Lgs. 81/08.
     """
-    try:
-        risultato = pmv_ppd(
-            tdb=temp_aria,    # Temperatura dell'aria secca (°C)
-            tr=temp_aria,     # Temperatura radiante media (assunta uguale a tdb)
-            vr=vel_aria,      # Velocità relativa dell'aria (m/s)
-            rh=umidita,       # Umidità relativa (%)
-            met=metabolismo,  # Metabolismo (Met)
-            clo=isolamento    # Isolamento termico (Clo)
-        )
-        return risultato
-    except Exception as e:
-        return {"pmv": None, "ppd": None, "error": str(e)}
+    # Convertiamo velocità relativa e isolamento dinamico
+    vel_relativa = v_relative(v=vel_aria, met=metabolismo)
+    isolamento_dinamico = clo_dynamic(clo=isolamento, met=metabolismo)
 
-# Funzione per generare PDF
-def genera_pdf(temp_aria, umidita, vel_aria, metabolismo, isolamento, pmv, ppd, lingua):
+    # Calcolo del PMV e PPD
+    risultato = pmv_ppd(
+        tdb=temp_aria,           # Temperatura dell'aria (°C)
+        tr=temp_radiante,        # Temperatura radiante media (°C)
+        vr=vel_relativa,         # Velocità relativa dell'aria (m/s)
+        rh=umidita,              # Umidità relativa (%)
+        met=metabolismo,         # Metabolismo (Met)
+        clo=isolamento_dinamico, # Isolamento termico dinamico (Clo)
+        standard="ISO"           # Specifica l'uso della norma ISO
+    )
+    return risultato
+
+# Funzione per generare il report PDF
+def genera_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento, pmv, ppd):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
-    title = "Analisi del Microclima Ufficio" if lingua == "Italiano" else "Office Microclimate Analysis"
-    pdf.cell(200, 10, txt=title, ln=True, align='C')
+    pdf.cell(200, 10, txt="Analisi del Microclima Ufficio", ln=True, align='C')
     pdf.ln(10)
 
-    pdf.cell(200, 10, txt="Parametri inseriti:" if lingua == "Italiano" else "Input Parameters:", ln=True)
-    pdf.cell(200, 10, txt=f"- Temperatura aria: {temp_aria} °C", ln=True)
-    pdf.cell(200, 10, txt=f"- Umidità relativa: {umidita} %", ln=True)
-    pdf.cell(200, 10, txt=f"- Velocità aria: {vel_aria} m/s", ln=True)
-    pdf.cell(200, 10, txt=f"- Metabolismo: {metabolismo} Met", ln=True)
-    pdf.cell(200, 10, txt=f"- Isolamento termico: {isolamento} Clo", ln=True)
+    pdf.cell(200, 10, txt="Parametri inseriti:", ln=True)
+    pdf.cell(200, 10, txt=f"Temperatura aria: {temp_aria} °C", ln=True)
+    pdf.cell(200, 10, txt=f"Temperatura radiante media: {temp_radiante} °C", ln=True)
+    pdf.cell(200, 10, txt=f"Velocità aria: {vel_aria} m/s", ln=True)
+    pdf.cell(200, 10, txt=f"Umidità relativa: {umidita} %", ln=True)
+    pdf.cell(200, 10, txt=f"Metabolismo: {metabolismo} Met", ln=True)
+    pdf.cell(200, 10, txt=f"Isolamento termico: {isolamento} Clo", ln=True)
     pdf.ln(10)
 
-    pdf.cell(200, 10, txt="Risultati:" if lingua == "Italiano" else "Results:", ln=True)
-    pdf.cell(200, 10, txt=f"- Indice PMV: {pmv:.2f}", ln=True)
-    pdf.cell(200, 10, txt=f"- Indice PPD: {ppd:.2f}%", ln=True)
-    pdf.ln(10)
+    pdf.cell(200, 10, txt="Risultati:", ln=True)
+    pdf.cell(200, 10, txt=f"Indice PMV: {pmv:.2f}", ln=True)
+    pdf.cell(200, 10, txt=f"Indice PPD: {ppd:.2f} %", ln=True)
 
-    if pmv < -0.5:
-        comfort = "Comfort termico troppo freddo." if lingua == "Italiano" else "Thermal comfort too cold."
-    elif pmv > 0.5:
-        comfort = "Comfort termico troppo caldo." if lingua == "Italiano" else "Thermal comfort too hot."
+    pdf.cell(200, 10, txt="Conformità normativa:", ln=True)
+    if -0.5 <= pmv <= 0.5 and ppd <= 10:
+        pdf.cell(200, 10, txt="I valori rispettano la normativa UNI EN ISO 7730 e il D.Lgs. 81/08.", ln=True)
     else:
-        comfort = "Comfort termico accettabile." if lingua == "Italiano" else "Acceptable thermal comfort."
-
-    pdf.cell(200, 10, txt=comfort, ln=True)
+        pdf.cell(200, 10, txt="I valori NON rispettano le condizioni di comfort richieste.", ln=True)
 
     pdf.output("report_microclima.pdf")
-    return "report_microclima.pdf"
-
-# Funzione per generare il grafico
-def genera_grafico(pmv, lingua):
-    fig, ax = plt.subplots()
-    categorie = ['Troppo freddo', 'Accettabile', 'Troppo caldo'] if lingua == "Italiano" else ['Too Cold', 'Acceptable', 'Too Hot']
-    valori = [1 if pmv < -0.5 else 0, 1 if -0.5 <= pmv <= 0.5 else 0, 1 if pmv > 0.5 else 0]
-
-    ax.bar(categorie, valori, color=['blue', 'green', 'red'])
-    ax.set_ylabel("Comfort termico" if lingua == "Italiano" else "Thermal Comfort")
-    ax.set_title("Distribuzione comfort termico" if lingua == "Italiano" else "Thermal Comfort Distribution")
-    st.pyplot(fig)
 
 # Interfaccia utente con Streamlit
-st.title("Analisi del Microclima Ufficio")
+st.title("Analisi del Microclima Ufficio (Conformità UNI EN ISO 7730 e D.Lgs. 81/08)")
+st.sidebar.header("Inserisci i parametri ambientali")
+temp_aria = st.sidebar.number_input("Temperatura aria (°C):", min_value=-10.0, max_value=50.0, value=22.0, step=0.1)
+temp_radiante = st.sidebar.number_input("Temperatura radiante media (°C):", min_value=-10.0, max_value=50.0, value=22.0, step=0.1)
+vel_aria = st.sidebar.number_input("Velocità aria (m/s):", min_value=0.0, max_value=5.0, value=0.1, step=0.1)
+umidita = st.sidebar.number_input("Umidità relativa (%):", min_value=0.0, max_value=100.0, value=50.0, step=1.0)
+metabolismo = st.sidebar.number_input("Metabolismo (Met):", min_value=0.0, max_value=5.0, value=1.2, step=0.1)
+isolamento = st.sidebar.number_input("Isolamento termico (Clo):", min_value=0.0, max_value=2.0, value=0.5, step=0.1)
 
-# Multilingua
-lingua = st.sidebar.selectbox("Seleziona la lingua / Select Language", ["Italiano", "English"])
-if lingua == "Italiano":
-    st.sidebar.header("Inserisci i parametri ambientali")
-else:
-    st.sidebar.header("Enter environmental parameters")
+# Bottone per calcolare i risultati
+if st.button("Calcola"):
+    risultati = calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento)
+    pmv = risultati['pmv']
+    ppd = risultati['ppd']
 
-temp_aria = st.sidebar.number_input("Temperatura aria (°C):" if lingua == "Italiano" else "Air temperature (°C):", min_value=0.0, max_value=50.0, value=22.0, step=0.1)
-umidita = st.sidebar.number_input("Umidità relativa (%):" if lingua == "Italiano" else "Relative humidity (%):", min_value=0.0, max_value=100.0, value=50.0, step=1.0)
-vel_aria = st.sidebar.number_input("Velocità aria (m/s):" if lingua == "Italiano" else "Air speed (m/s):", min_value=0.0, max_value=5.0, value=0.1, step=0.1)
-metabolismo = st.sidebar.number_input("Metabolismo (Met):" if lingua == "Italiano" else "Metabolism (Met):", min_value=0.0, max_value=5.0, value=1.2, step=0.1)
-isolamento = st.sidebar.number_input("Isolamento termico (Clo):" if lingua == "Italiano" else "Thermal insulation (Clo):", min_value=0.0, max_value=2.0, value=0.5, step=0.1)
+    st.subheader("Risultati")
+    st.write(f"**Indice PMV:** {pmv:.2f}")
+    st.write(f"**Indice PPD:** {ppd:.2f}%")
 
-# Bottone per calcolare
-if st.button("Calcola" if lingua == "Italiano" else "Calculate"):
-    risultati = calcola_microclima(temp_aria, umidita, vel_aria, metabolismo, isolamento)
-
-    if risultati["pmv"] is not None and risultati["ppd"] is not None:
-        pmv = risultati["pmv"]
-        ppd = risultati["ppd"]
-
-        st.subheader("Risultati" if lingua == "Italiano" else "Results")
-        st.write(f"**Indice PMV:** {pmv:.2f}")
-        st.write(f"**Indice PPD:** {ppd:.2f}%")
-
-        genera_grafico(pmv, lingua)
-
-        pdf_path = genera_pdf(temp_aria, umidita, vel_aria, metabolismo, isolamento, pmv, ppd, lingua)
-        with open(pdf_path, "rb") as file:
-            st.download_button(
-                label="Scarica il report in PDF" if lingua == "Italiano" else "Download PDF Report",
-                data=file,
-                file_name="report_microclima.pdf",
-                mime="application/pdf"
-            )
+    # Conformità normativa
+    if -0.5 <= pmv <= 0.5 and ppd <= 10:
+        st.success("I valori rispettano la normativa UNI EN ISO 7730 e il D.Lgs. 81/08.")
     else:
-        st.error("Errore durante il calcolo." if lingua == "Italiano" else "Error during calculation.")
+        st.error("I valori NON rispettano le condizioni di comfort richieste.")
+
+    # Generazione del report PDF
+    if st.button("Scarica report PDF"):
+        genera_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento, pmv, ppd)
+        st.success("Report PDF generato! Controlla la cartella di output.")
+
