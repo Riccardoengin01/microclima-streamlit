@@ -1,3 +1,6 @@
+import os
+os.system('pip install pythermalcomfort')
+
 import streamlit as st
 from pythermalcomfort.models import pmv_ppd
 
