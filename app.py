@@ -81,7 +81,6 @@ from pdf_generator import genera_report_pdf
 
 # Interfaccia utente Streamlit
 st.title("Analisi del Microclima Ufficio (UNI EN ISO 7730 e D.Lgs. 81/08)")
-st.sidebar.header("Inserisci i parametri ambientali")
 from parametri_definizioni import parametri_definizioni
 
 st.sidebar.header("Inserisci i parametri ambientali")
