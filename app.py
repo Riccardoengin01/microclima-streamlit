@@ -10,23 +10,59 @@ import matplotlib.pyplot as plt
 # Funzione per calcolare PMV e PPD
 def calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento):
     """
-    Calcola PMV e PPD secondo UNI EN ISO 7730 e converte i valori per il D.Lgs. 81/08.
+    Calcola PMV e PPD basati sul modello VBA adattato in Python.
     """
-    # Convertiamo velocità relativa e isolamento dinamico
-    vel_relativa = v_relative(v=vel_aria, met=metabolismo)
-    isolamento_dinamico = clo_dynamic(clo=isolamento, met=metabolismo)
+    import math
 
-    # Calcolo del PMV e PPD
-    risultato = pmv_ppd(
-        tdb=temp_aria,           # Temperatura dell'aria (°C)
-        tr=temp_radiante,        # Temperatura radiante media (°C)
-        vr=vel_relativa,         # Velocità relativa dell'aria (m/s)
-        rh=umidita,              # Umidità relativa (%)
-        met=metabolismo,         # Metabolismo (Met)
-        clo=isolamento_dinamico, # Isolamento termico dinamico (Clo)
-        standard="ISO"           # Specifica l'uso della norma ISO
-    )
-    return risultato
+    FNPS = math.exp(16.6536 - 4030.183 / (temp_aria + 235))
+    PA = umidita * 10 * FNPS
+    ICL = 0.155 * isolamento
+    M = metabolismo * 58.15
+
+    # Calcolo FCL
+    if ICL < 0.078:
+        FCL = 1 + 1.29 * ICL
+    else:
+        FCL = 1.05 + 0.645 * ICL
+
+    # Parametri intermedi
+    HCF = 12.1 * vel_aria ** 0.5
+    TAA = temp_aria + 273
+    TRA = temp_radiante + 273
+    TCLA = TAA + (35.5 - temp_aria) / (3.5 * (6.45 * ICL + 0.1))
+
+    # Iterazioni per calcolo TCL
+    P1 = ICL * FCL
+    P2 = P1 * 3.96
+    P3 = P1 * 100
+    P4 = P1 * TAA
+    P5 = 308.7 - 0.028 * M + P2 * (TRA / 100) ** 4
+
+    XN = TCLA / 100
+    XF = TCLA / 50
+    EPS = 0.0015
+    while abs(XN - XF) > EPS:
+        XF = (XF + XN) / 2
+        HCN = 2.38 * abs(100 * XF - TAA) ** 0.25
+        HC = max(HCF, HCN)
+        XN = (P5 + P4 * HC - P2 * (XF ** 4)) / (100 + P3 * HC)
+
+    TCL = 100 * XN - 273
+
+    # Calcoli termici
+    HL1 = 3.05 * 0.001 * (5733 - 6.99 * M - PA)
+    HL2 = 0.42 * (M - 58.15) if M > 58.15 else 0
+    HL3 = 1.7 * 0.00001 * M * (5867 - PA)
+    HL4 = 0.0014 * M * (34 - temp_aria)
+    HL5 = 3.96 * FCL * (XN ** 4 - (TRA / 100) ** 4)
+    HL6 = FCL * HC * (TCL - temp_aria)
+
+    # PMV e PPD
+    TS = 0.303 * math.exp(-0.036 * M) + 0.028
+    PMV = TS * (M - HL1 - HL2 - HL3 - HL4 - HL5 - HL6)
+    PPD = 100 - 95 * math.exp(-0.03353 * PMV ** 4 - 0.2179 * PMV ** 2)
+
+    return {"pmv": PMV, "ppd": PPD}
 
 # Funzione per generare il report PDF
 def genera_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento, pmv, ppd):
