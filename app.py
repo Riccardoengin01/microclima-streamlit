@@ -1,4 +1,3 @@
-%%writefile app.py
 import streamlit as st
 from pythermalcomfort.models import pmv_ppd
 
