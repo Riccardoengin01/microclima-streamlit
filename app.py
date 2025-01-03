@@ -89,42 +89,27 @@ def genera_grafico_pmv_ppd(pmv, ppd):
     return buf
 
 # Funzione per generare il report PDF
-def genera_report_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento, pmv, ppd):
-    """
-    Genera un report PDF con i risultati e il grafico PMV-PPD.
-    """
-    grafico_buffer = genera_grafico_pmv_ppd(pmv, ppd)
+from pdf_generator import genera_report_pdf
 
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, txt="Analisi del Microclima Ufficio", ln=True, align='C')
-    pdf.ln(10)
+# Bottone per calcolare i risultati
+if st.button("Calcola"):
+    risultati = calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento)
+    pmv = risultati['pmv']
+    ppd = risultati['ppd']
 
-    # Parametri ambientali
-    pdf.cell(200, 10, txt="Parametri ambientali:", ln=True)
-    pdf.cell(200, 10, txt=f"Temperatura aria (°C): {temp_aria}", ln=True)
-    pdf.cell(200, 10, txt=f"Temperatura radiante (°C): {temp_radiante}", ln=True)
-    pdf.cell(200, 10, txt=f"Velocità aria (m/s): {vel_aria}", ln=True)
-    pdf.cell(200, 10, txt=f"Umidità relativa (%): {umidita}", ln=True)
-    pdf.cell(200, 10, txt=f"Metabolismo (Met): {metabolismo}", ln=True)
-    pdf.cell(200, 10, txt=f"Isolamento termico (Clo): {isolamento}", ln=True)
-    pdf.ln(10)
+    st.subheader("Risultati")
+    st.write(f"**Indice PMV:** {pmv:.2f}")
+    st.write(f"**Indice PPD:** {ppd:.2f}%")
 
-    # Risultati
-    pdf.cell(200, 10, txt="Risultati calcolati:", ln=True)
-    pdf.cell(200, 10, txt=f"Indice PMV: {pmv:.2f}", ln=True)
-    pdf.cell(200, 10, txt=f"Indice PPD: {ppd:.2f}%", ln=True)
-    pdf.ln(10)
-
-    # Inserimento del grafico
-    pdf.cell(200, 10, txt="Grafico PMV-PPD:", ln=True)
-    grafico_buffer.seek(0)
-    pdf.image(grafico_buffer, x=10, y=pdf.get_y() + 10, w=150)
-    pdf.ln(85)
-
-    pdf.output("report_microclima.pdf")
-    return "report_microclima.pdf"
+    if st.button("Scarica report PDF"):
+        pdf_path = genera_report_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento, pmv, ppd)
+        with open(pdf_path, "rb") as file:
+            st.download_button(
+                label="Scarica Report PDF",
+                data=file,
+                file_name="report_microclima.pdf",
+                mime="application/pdf"
+            )
 
 # Interfaccia utente Streamlit
 st.title("Analisi del Microclima Ufficio (UNI EN ISO 7730 e D.Lgs. 81/08)")
