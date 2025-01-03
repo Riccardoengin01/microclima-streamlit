@@ -80,7 +80,8 @@ def genera_grafico_pmv_ppd(pmv, ppd):
 from pdf_generator import genera_report_pdf
 
 # Interfaccia utente Streamlit
-st.title("Analisi del Microclima Ufficio (UNI EN ISO 7730 e D.Lgs. 81/08)")
+st.title("Analisi del Microclima Ufficio")
+st.subheader("(UNI EN ISO 7730 e D.Lgs. 81/08)")
 from parametri_definizioni import parametri_definizioni
 
 st.sidebar.header("Inserisci i parametri ambientali")
