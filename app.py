@@ -6,6 +6,7 @@ from fpdf import FPDF
 import matplotlib.pyplot as plt
 import io
 import math
+from spiegazioni_indici import spiegazioni_indici
 
 # Funzione per calcolare PMV e PPD basati sulle formule della norma UNI EN ISO 7730
 def calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento):
@@ -114,7 +115,10 @@ if st.button("Calcola"):
 
     st.subheader("Risultati")
     st.write(f"**Indice PMV:** {pmv:.2f}")
+    st.text(spiegazioni_indici["pmv"])  # Spiegazione PMV
+    
     st.write(f"**Indice PPD:** {ppd:.2f}%")
+    st.text(spiegazioni_indici["ppd"])  # Spiegazione PPD
 
     grafico_buffer = genera_grafico_pmv_ppd(pmv, ppd)
     st.image(grafico_buffer, caption="Relazione tra PMV e PPD")
