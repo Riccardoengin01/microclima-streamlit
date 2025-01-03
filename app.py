@@ -1,7 +1,4 @@
 import os
-os.system('pip install fpdf matplotlib')
-
-import os
 os.system('pip install pythermalcomfort fpdf matplotlib')
 
 import streamlit as st
@@ -28,14 +25,15 @@ def calcola_microclima(temp_aria, umidita, vel_aria, metabolismo, isolamento):
         return {"pmv": None, "ppd": None, "error": str(e)}
 
 # Funzione per generare PDF
-def genera_pdf(temp_aria, umidita, vel_aria, metabolismo, isolamento, pmv, ppd):
+def genera_pdf(temp_aria, umidita, vel_aria, metabolismo, isolamento, pmv, ppd, lingua):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, txt="Analisi del Microclima Ufficio", ln=True, align='C')
+    title = "Analisi del Microclima Ufficio" if lingua == "Italiano" else "Office Microclimate Analysis"
+    pdf.cell(200, 10, txt=title, ln=True, align='C')
     pdf.ln(10)
 
-    pdf.cell(200, 10, txt="Parametri inseriti:", ln=True)
+    pdf.cell(200, 10, txt="Parametri inseriti:" if lingua == "Italiano" else "Input Parameters:", ln=True)
     pdf.cell(200, 10, txt=f"- Temperatura aria: {temp_aria} °C", ln=True)
     pdf.cell(200, 10, txt=f"- Umidità relativa: {umidita} %", ln=True)
     pdf.cell(200, 10, txt=f"- Velocità aria: {vel_aria} m/s", ln=True)
@@ -43,35 +41,32 @@ def genera_pdf(temp_aria, umidita, vel_aria, metabolismo, isolamento, pmv, ppd):
     pdf.cell(200, 10, txt=f"- Isolamento termico: {isolamento} Clo", ln=True)
     pdf.ln(10)
 
-    pdf.cell(200, 10, txt="Risultati:", ln=True)
+    pdf.cell(200, 10, txt="Risultati:" if lingua == "Italiano" else "Results:", ln=True)
     pdf.cell(200, 10, txt=f"- Indice PMV: {pmv:.2f}", ln=True)
     pdf.cell(200, 10, txt=f"- Indice PPD: {ppd:.2f}%", ln=True)
     pdf.ln(10)
 
     if pmv < -0.5:
-        pdf.cell(200, 10, txt="Comfort termico troppo freddo.", ln=True)
+        comfort = "Comfort termico troppo freddo." if lingua == "Italiano" else "Thermal comfort too cold."
     elif pmv > 0.5:
-        pdf.cell(200, 10, txt="Comfort termico troppo caldo.", ln=True)
+        comfort = "Comfort termico troppo caldo." if lingua == "Italiano" else "Thermal comfort too hot."
     else:
-        pdf.cell(200, 10, txt="Comfort termico accettabile.", ln=True)
+        comfort = "Comfort termico accettabile." if lingua == "Italiano" else "Acceptable thermal comfort."
 
-    if ppd > 10:
-        pdf.cell(200, 10, txt=f"Molte persone ({ppd:.2f}%) potrebbero non essere soddisfatte.", ln=True)
-    else:
-        pdf.cell(200, 10, txt="La maggior parte delle persone è soddisfatta del comfort termico.", ln=True)
+    pdf.cell(200, 10, txt=comfort, ln=True)
 
     pdf.output("report_microclima.pdf")
     return "report_microclima.pdf"
 
 # Funzione per generare il grafico
-def genera_grafico(pmv):
+def genera_grafico(pmv, lingua):
     fig, ax = plt.subplots()
-    categorie = ['Troppo freddo', 'Accettabile', 'Troppo caldo']
+    categorie = ['Troppo freddo', 'Accettabile', 'Troppo caldo'] if lingua == "Italiano" else ['Too Cold', 'Acceptable', 'Too Hot']
     valori = [1 if pmv < -0.5 else 0, 1 if -0.5 <= pmv <= 0.5 else 0, 1 if pmv > 0.5 else 0]
 
     ax.bar(categorie, valori, color=['blue', 'green', 'red'])
-    ax.set_ylabel("Comfort termico")
-    ax.set_title("Distribuzione comfort termico")
+    ax.set_ylabel("Comfort termico" if lingua == "Italiano" else "Thermal Comfort")
+    ax.set_title("Distribuzione comfort termico" if lingua == "Italiano" else "Thermal Comfort Distribution")
     st.pyplot(fig)
 
 # Interfaccia utente con Streamlit
@@ -102,9 +97,9 @@ if st.button("Calcola" if lingua == "Italiano" else "Calculate"):
         st.write(f"**Indice PMV:** {pmv:.2f}")
         st.write(f"**Indice PPD:** {ppd:.2f}%")
 
-        genera_grafico(pmv)
+        genera_grafico(pmv, lingua)
 
-        pdf_path = genera_pdf(temp_aria, umidita, vel_aria, metabolismo, isolamento, pmv, ppd)
+        pdf_path = genera_pdf(temp_aria, umidita, vel_aria, metabolismo, isolamento, pmv, ppd, lingua)
         with open(pdf_path, "rb") as file:
             st.download_button(
                 label="Scarica il report in PDF" if lingua == "Italiano" else "Download PDF Report",
