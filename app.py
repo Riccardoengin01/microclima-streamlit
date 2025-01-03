@@ -1,4 +1,7 @@
 import os
+os.system('pip install fpdf matplotlib')
+
+import os
 os.system('pip install pythermalcomfort fpdf matplotlib')
 
 import streamlit as st
