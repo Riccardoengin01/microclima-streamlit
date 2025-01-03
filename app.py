@@ -88,11 +88,10 @@ def genera_grafico_pmv_ppd(pmv, ppd):
     plt.close()
     return buf
 
-# Funzione per generare il report PDF
 from pdf_generator import genera_report_pdf
 
 # Bottone per calcolare i risultati
-if st.button("Calcola"):
+if st.button("Calcola risultati", key="calcola_risultati"):
     risultati = calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento)
     pmv = risultati['pmv']
     ppd = risultati['ppd']
@@ -101,15 +100,23 @@ if st.button("Calcola"):
     st.write(f"**Indice PMV:** {pmv:.2f}")
     st.write(f"**Indice PPD:** {ppd:.2f}%")
 
-    if st.button("Scarica report PDF"):
-        pdf_path = genera_report_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento, pmv, ppd)
-        with open(pdf_path, "rb") as file:
-            st.download_button(
-                label="Scarica Report PDF",
-                data=file,
-                file_name="report_microclima.pdf",
-                mime="application/pdf"
-            )
+    # Conformità normativa
+    if -0.5 <= pmv <= 0.5 and ppd <= 10:
+        st.success("I valori rispettano la normativa UNI EN ISO 7730 e il D.Lgs. 81/08.")
+    else:
+        st.error("I valori NON rispettano le condizioni di comfort richieste.")
+
+    # Sezione per il report PDF
+    with st.container():
+        if st.button("Scarica report PDF", key="scarica_pdf"):
+            pdf_path = genera_report_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento, pmv, ppd)
+            with open(pdf_path, "rb") as file:
+                st.download_button(
+                    label="Scarica Report PDF",
+                    data=file,
+                    file_name="report_microclima.pdf",
+                    mime="application/pdf"
+                )
 
 # Interfaccia utente Streamlit
 st.title("Analisi del Microclima Ufficio (UNI EN ISO 7730 e D.Lgs. 81/08)")
