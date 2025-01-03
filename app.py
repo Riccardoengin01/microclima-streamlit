@@ -82,12 +82,29 @@ from pdf_generator import genera_report_pdf
 # Interfaccia utente Streamlit
 st.title("Analisi del Microclima Ufficio (UNI EN ISO 7730 e D.Lgs. 81/08)")
 st.sidebar.header("Inserisci i parametri ambientali")
+from parametri_definizioni import parametri_definizioni
+
+st.sidebar.header("Inserisci i parametri ambientali")
+
+# Input con descrizione fissa sotto
 temp_aria = st.sidebar.number_input("Temperatura aria (°C):", min_value=-10.0, max_value=50.0, value=22.0, step=0.1)
+st.sidebar.caption(parametri_definizioni["temp_aria"])
+
 temp_radiante = st.sidebar.number_input("Temperatura radiante media (°C):", min_value=-10.0, max_value=50.0, value=22.0, step=0.1)
+st.sidebar.caption(parametri_definizioni["temp_radiante"])
+
 vel_aria = st.sidebar.number_input("Velocità aria (m/s):", min_value=0.0, max_value=5.0, value=0.1, step=0.1)
+st.sidebar.caption(parametri_definizioni["vel_aria"])
+
 umidita = st.sidebar.number_input("Umidità relativa (%):", min_value=0.0, max_value=100.0, value=50.0, step=1.0)
+st.sidebar.caption(parametri_definizioni["umidita"])
+
 metabolismo = st.sidebar.number_input("Metabolismo (Met):", min_value=0.0, max_value=5.0, value=1.2, step=0.1)
+st.sidebar.caption(parametri_definizioni["metabolismo"])
+
 isolamento = st.sidebar.number_input("Isolamento termico (Clo):", min_value=0.0, max_value=2.0, value=0.5, step=0.1)
+st.sidebar.caption(parametri_definizioni["isolamento"])
+
 
 # Bottone per calcolare i risultati
 if st.button("Calcola"):
