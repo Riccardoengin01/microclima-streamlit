@@ -5,7 +5,7 @@ def setup_layout(parametri_definizioni):
     st.markdown("""
         <style>
         [data-testid="stSidebar"] {
-            width: 400px;
+            width: 600px;
         }
         </style>
     """, unsafe_allow_html=True)
