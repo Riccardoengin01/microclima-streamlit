@@ -19,29 +19,28 @@ import matplotlib.pyplot as plt
 
 import streamlit as st
 
-import streamlit as st
-
 st.markdown("""
     <style>
-        /* Sidebar attaccata a sinistra */
+        /* Sidebar completamente attaccata a sinistra */
         [data-testid="stSidebar"] {
             position: fixed;
             top: 0;
             left: 0;
             width: 300px;
             height: 100vh;
-            background-color: #f2f2f2;
+            background-color: #f8f9fa;
             padding: 20px;
-            box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            border-right: 1px solid #ddd;
         }
 
-        /* Adattamento del contenuto principale */
+        /* Adattare il contenuto principale */
         [data-testid="stAppViewContainer"] {
-            margin-left: 320px;
-            padding: 10px;
+            margin-left: 310px;
+            padding: 20px;
         }
 
-        /* Rimuovere eventuale freccia per espandere/collassare */
+        /* Rimuovere la freccia di espansione */
         [data-testid="collapsedControl"] {
             display: none;
         }
