@@ -9,92 +9,13 @@ import os
 os.system('pip install pythermalcomfort matplotlib fpdf')
 
 import streamlit as st
-from fpdf import FPDF
-import matplotlib.pyplot as plt
-import io
 import math
+from layout import setup_layout  # Importa il modulo layout
 from spiegazioni_indici import spiegazioni_indici
-
-# Layout diviso con colonne
-col1, col2 = st.columns([1, 2])
-
-# Sidebar nella colonna di sinistra
-with col1:
-    st.sidebar.header("Inserisci i parametri ambientali")
-    temp_aria = st.sidebar.number_input("Temperatura aria (°C):", min_value=-10.0, max_value=50.0, value=22.0, step=0.1)
-    st.sidebar.caption(parametri_definizioni["temp_aria"])
-
-    temp_radiante = st.sidebar.number_input("Temperatura radiante media (°C):", min_value=-10.0, max_value=50.0, value=22.0, step=0.1)
-    st.sidebar.caption(parametri_definizioni["temp_radiante"])
-
-    vel_aria = st.sidebar.number_input("Velocità aria (m/s):", min_value=0.0, max_value=5.0, value=0.1, step=0.1)
-    st.sidebar.caption(parametri_definizioni["vel_aria"])
-
-    umidita = st.sidebar.number_input("Umidità relativa (%):", min_value=0.0, max_value=100.0, value=50.0, step=1.0)
-    st.sidebar.caption(parametri_definizioni["umidita"])
-
-    metabolismo = st.sidebar.number_input("Metabolismo (Met):", min_value=0.0, max_value=5.0, value=1.2, step=0.1)
-    st.sidebar.caption(parametri_definizioni["metabolismo"])
-
-    isolamento = st.sidebar.number_input("Isolamento termico (Clo):", min_value=0.0, max_value=2.0, value=0.5, step=0.1)
-    st.sidebar.caption(parametri_definizioni["isolamento"])
-
-# Sezione principale nella colonna di destra
-with col2:
-    st.title("Analisi del Microclima Ufficio")
-    st.subheader("(UNI EN ISO 7730 e D.Lgs. 81/08)")
-    st.write("Inserisci i parametri nella barra laterale per calcolare gli indici PMV e PPD.")
-
-    if st.button("Calcola"):
-        risultati = calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento)
-        pmv = risultati['pmv']
-        ppd = risultati['ppd']
-
-        st.subheader("Risultati")
-        st.write(f"**Indice PMV:** {pmv:.2f}")
-        st.text(spiegazioni_indici["pmv"])  # Spiegazione PMV
-        st.write(f"**Indice PPD:** {ppd:.2f}%")
-        st.text(spiegazioni_indici["ppd"])  # Spiegazione PPD
-
-        grafico_buffer = genera_grafico_pmv_ppd(pmv, ppd)
-        st.image(grafico_buffer, caption="Relazione tra PMV e PPD")
-
-        # Download del report
-        report_pdf = genera_report_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento, pmv, ppd)
-        with open(report_pdf, "rb") as file:
-            st.download_button(
-                label="Scarica Report PDF",
-                data=file,
-                file_name="report_microclima.pdf",
-                mime="application/pdf"
-            )
-
-# Aggiungi uno stile personalizzato per migliorare il design
-st.markdown("""
-    <style>
-    .report-container {
-        background-color: #f9f9f9;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-    }
-    .sidebar .sidebar-content {
-        background-color: #f2f2f2;
-        padding: 20px;
-    }
-    .stButton button {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    .stButton button:hover {
-        background-color: #45a049;
-    }
-    </style>
-""", unsafe_allow_html=True)
+from parametri_definizioni import parametri_definizioni
+from pdf_generator import genera_report_pdf
+import io
+import matplotlib.pyplot as plt
 
 # Funzione per calcolare PMV e PPD basati sulle formule della norma UNI EN ISO 7730
 def calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento):
@@ -166,58 +87,29 @@ def genera_grafico_pmv_ppd(pmv, ppd):
     plt.close()
     return buf
 
-from pdf_generator import genera_report_pdf
+# Layout e parametri
+inputs = setup_layout(parametri_definizioni)
 
-# Interfaccia utente Streamlit
-st.title("Analisi del Microclima Ufficio")
-st.subheader("(UNI EN ISO 7730 e D.Lgs. 81/08)")
-
-from parametri_definizioni import parametri_definizioni
-
-st.sidebar.header("Inserisci i parametri ambientali")
-
-# Input con descrizione fissa sotto
-temp_aria = st.sidebar.number_input("Temperatura aria (°C):", min_value=10.0, max_value=40.0, value=22.0, step=0.1)
-st.sidebar.caption(parametri_definizioni["temp_aria"])
-
-temp_radiante = st.sidebar.number_input("Temperatura radiante media (°C):", min_value=10.0, max_value=40.0, value=22.0, step=0.1)
-st.sidebar.caption(parametri_definizioni["temp_radiante"])
-
-vel_aria = st.sidebar.number_input("Velocità aria (m/s):", min_value=0.0, max_value=1.0, value=0.1, step=0.1)
-st.sidebar.caption(parametri_definizioni["vel_aria"])
-
-umidita = st.sidebar.number_input("Umidità relativa (%):", min_value=30.0, max_value=70.0, value=50.0, step=1.0)
-st.sidebar.caption(parametri_definizioni["umidita"])
-
-metabolismo = st.sidebar.number_input("Metabolismo (Met):", min_value=0.8, max_value=4.0, value=1.2, step=0.1)
-st.sidebar.caption(parametri_definizioni["metabolismo"])
-
-isolamento = st.sidebar.number_input("Isolamento termico (Clo):", min_value=0.0, max_value=2.0, value=0.5, step=0.1)
-st.sidebar.caption(parametri_definizioni["isolamento"])
-
-
-# Bottone per calcolare i risultati
-if st.button("Calcola"):
-    risultati = calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento)
-    pmv = risultati['pmv']
-    ppd = risultati['ppd']
+# Calcolo e risultati
+if inputs["submit"]:
+    risultati = calcola_microclima(
+        inputs["temp_aria"], inputs["temp_radiante"], inputs["vel_aria"],
+        inputs["umidita"], inputs["metabolismo"], inputs["isolamento"]
+    )
+    pmv, ppd = risultati["pmv"], risultati["ppd"]
 
     st.subheader("Risultati")
     st.write(f"**Indice PMV:** {pmv:.2f}")
-    st.text(spiegazioni_indici["pmv"])  # Spiegazione PMV
-    
+    st.text(spiegazioni_indici["pmv"])
     st.write(f"**Indice PPD:** {ppd:.2f}%")
-    st.text(spiegazioni_indici["ppd"])  # Spiegazione PPD
+    st.text(spiegazioni_indici["ppd"])
 
-    grafico_buffer = genera_grafico_pmv_ppd(pmv, ppd)
-    st.image(grafico_buffer, caption="Relazione tra PMV e PPD")
+    grafico = genera_grafico_pmv_ppd(pmv, ppd)
+    st.image(grafico, caption="Relazione tra PMV e PPD")
 
-    # Download del report
-    report_pdf = genera_report_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento, pmv, ppd)
+    report_pdf = genera_report_pdf(
+        inputs["temp_aria"], inputs["temp_radiante"], inputs["vel_aria"],
+        inputs["umidita"], inputs["metabolismo"], inputs["isolamento"], pmv, ppd
+    )
     with open(report_pdf, "rb") as file:
-        st.download_button(
-            label="Scarica Report PDF",
-            data=file,
-            file_name="report_microclima.pdf",
-            mime="application/pdf"
-        )
+        st.download_button("Scarica Report PDF", file.read(), file_name="report_microclima.pdf", mime="application/pdf")
