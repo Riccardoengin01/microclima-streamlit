@@ -5,7 +5,7 @@ import streamlit as st
 st.markdown("""
     <style>
         [data-testid="stSidebar"] {
-            width: 40%; /* Puoi regolare la percentuale per maggiore larghezza */
+            width: 50%; /* Puoi regolare la percentuale per maggiore larghezza */
             min-width: 400px; /* Imposta una larghezza minima */
         }
         .block-container {
