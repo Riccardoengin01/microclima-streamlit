@@ -23,41 +23,27 @@ import streamlit as st
 
 st.markdown("""
     <style>
-        /* Sidebar sempre visibile */
+        /* Sidebar attaccata a sinistra */
+        [data-testid="stSidebar"] {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100vh;
+            background-color: #f2f2f2;
+            padding: 20px;
+            box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Adattamento del contenuto principale */
+        [data-testid="stAppViewContainer"] {
+            margin-left: 320px;
+            padding: 10px;
+        }
+
+        /* Rimuovere eventuale freccia per espandere/collassare */
         [data-testid="collapsedControl"] {
             display: none;
-        }
-
-        /* Sidebar più larga */
-        [data-testid="stSidebar"] {
-            width: 10%;
-            min-width: 900px;
-        }
-
-        /* Contenuto principale adattato */
-        [data-testid="stAppViewContainer"] {
-            margin-left: 370px;
-            padding: 10px;
-        }
-
-        /* Rimuove il margine vuoto nella sidebar */
-        section[data-testid="stSidebar"] > div {
-            padding: 10px;
-        }
-
-        /* Migliora la visualizzazione dei bottoni */
-        .stButton button {
-            width: 100%;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        .stButton button:hover {
-            background-color: #45a049;
         }
     </style>
 """, unsafe_allow_html=True)
