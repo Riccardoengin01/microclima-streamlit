@@ -19,24 +19,41 @@ import matplotlib.pyplot as plt
 
 import streamlit as st
 
-# CSS personalizzato per allargare la sidebar
+import streamlit as st
+
+# CSS personalizzato per allargare la sidebar e adattare il contenuto principale
 st.markdown("""
     <style>
         /* Sidebar più larga */
         [data-testid="stSidebar"] {
-            width: 400px !important; /* Larghezza sidebar */
-            min-width: 400px !important;
+            width: 35%;
+            min-width: 350px;
         }
 
         /* Contenuto principale adattato */
         [data-testid="stAppViewContainer"] {
-            margin-left: 420px; /* Sposta il contenuto principale */
-            padding: 20px;
+            margin-left: 370px;
+            padding: 10px;
         }
 
-        /* Rimuove padding extra nella pagina */
-        .block-container {
-            padding: 1rem 1rem 1rem 1rem;
+        /* Rimuove il margine vuoto nella sidebar */
+        section[data-testid="stSidebar"] > div {
+            padding: 10px;
+        }
+
+        /* Migliora la visualizzazione dei bottoni */
+        .stButton button {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .stButton button:hover {
+            background-color: #45a049;
         }
     </style>
 """, unsafe_allow_html=True)
