@@ -147,14 +147,14 @@ if st.button("Calcola"):
         grafico_buffer = genera_grafico_pmv_ppd(pmv, ppd)
         st.image(grafico_buffer, caption="Relazione tra PMV e PPD")
 
-         # Download del report
-    report_pdf = genera_report_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento, pmv, ppd)
-    with open(report_pdf, "rb") as file:
-        st.download_button(
-            label="Scarica Report PDF",
-            data=file,
-            file_name="report_microclima.pdf",
-            mime="application/pdf"
-        )
+        # Download del report
+        report_pdf = genera_report_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento, pmv, ppd)
+        with open(report_pdf, "rb") as file:
+            st.download_button(
+                label="Scarica Report PDF",
+                data=file,
+                file_name="report_microclima.pdf",
+                mime="application/pdf"
+            )
     else:
         st.error("Errore durante il calcolo. Verifica i parametri inseriti.")
