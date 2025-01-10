@@ -19,34 +19,6 @@ import matplotlib.pyplot as plt
 
 import streamlit as st
 
-st.markdown("""
-    <style>
-        /* Sidebar completamente attaccata a sinistra */
-        [data-testid="stSidebar"] {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 300px;
-            height: 100vh;
-            background-color: #f8f9fa;
-            padding: 20px;
-            z-index: 999;
-            border-right: 1px solid #ddd;
-        }
-
-        /* Adattare il contenuto principale */
-        [data-testid="stAppViewContainer"] {
-            margin-left: 310px;
-            padding: 20px;
-        }
-
-        /* Rimuovere la freccia di espansione */
-        [data-testid="collapsedControl"] {
-            display: none;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
 # Funzione per calcolare PMV e PPD basati sulle formule della norma UNI EN ISO 7730
 def calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento):
     FNPS = math.exp(16.6536 - 4030.183 / (temp_aria + 235))
