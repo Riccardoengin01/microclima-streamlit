@@ -30,8 +30,8 @@ st.markdown("""
 
         /* Sidebar più larga */
         [data-testid="stSidebar"] {
-            width: 35%;
-            min-width: 350px;
+            width: 10%;
+            min-width: 900px;
         }
 
         /* Contenuto principale adattato */
