@@ -15,6 +15,33 @@ import io
 import math
 from spiegazioni_indici import spiegazioni_indici
 
+# Aggiungi uno stile personalizzato per migliorare il design
+st.markdown("""
+    <style>
+    .report-container {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    }
+    .sidebar .sidebar-content {
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
+    .stButton button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .stButton button:hover {
+        background-color: #45a049;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Funzione per calcolare PMV e PPD basati sulle formule della norma UNI EN ISO 7730
 def calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento):
     FNPS = math.exp(16.6536 - 4030.183 / (temp_aria + 235))
