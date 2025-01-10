@@ -21,9 +21,13 @@ import streamlit as st
 
 import streamlit as st
 
-# CSS personalizzato per allargare la sidebar e adattare il contenuto principale
 st.markdown("""
     <style>
+        /* Sidebar sempre visibile */
+        [data-testid="collapsedControl"] {
+            display: none;
+        }
+
         /* Sidebar più larga */
         [data-testid="stSidebar"] {
             width: 35%;
