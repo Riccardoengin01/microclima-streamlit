@@ -15,6 +15,60 @@ import io
 import math
 from spiegazioni_indici import spiegazioni_indici
 
+# Layout diviso con colonne
+col1, col2 = st.columns([1, 2])
+
+# Sidebar nella colonna di sinistra
+with col1:
+    st.sidebar.header("Inserisci i parametri ambientali")
+    temp_aria = st.sidebar.number_input("Temperatura aria (°C):", min_value=-10.0, max_value=50.0, value=22.0, step=0.1)
+    st.sidebar.caption(parametri_definizioni["temp_aria"])
+
+    temp_radiante = st.sidebar.number_input("Temperatura radiante media (°C):", min_value=-10.0, max_value=50.0, value=22.0, step=0.1)
+    st.sidebar.caption(parametri_definizioni["temp_radiante"])
+
+    vel_aria = st.sidebar.number_input("Velocità aria (m/s):", min_value=0.0, max_value=5.0, value=0.1, step=0.1)
+    st.sidebar.caption(parametri_definizioni["vel_aria"])
+
+    umidita = st.sidebar.number_input("Umidità relativa (%):", min_value=0.0, max_value=100.0, value=50.0, step=1.0)
+    st.sidebar.caption(parametri_definizioni["umidita"])
+
+    metabolismo = st.sidebar.number_input("Metabolismo (Met):", min_value=0.0, max_value=5.0, value=1.2, step=0.1)
+    st.sidebar.caption(parametri_definizioni["metabolismo"])
+
+    isolamento = st.sidebar.number_input("Isolamento termico (Clo):", min_value=0.0, max_value=2.0, value=0.5, step=0.1)
+    st.sidebar.caption(parametri_definizioni["isolamento"])
+
+# Sezione principale nella colonna di destra
+with col2:
+    st.title("Analisi del Microclima Ufficio")
+    st.subheader("(UNI EN ISO 7730 e D.Lgs. 81/08)")
+    st.write("Inserisci i parametri nella barra laterale per calcolare gli indici PMV e PPD.")
+
+    if st.button("Calcola"):
+        risultati = calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento)
+        pmv = risultati['pmv']
+        ppd = risultati['ppd']
+
+        st.subheader("Risultati")
+        st.write(f"**Indice PMV:** {pmv:.2f}")
+        st.text(spiegazioni_indici["pmv"])  # Spiegazione PMV
+        st.write(f"**Indice PPD:** {ppd:.2f}%")
+        st.text(spiegazioni_indici["ppd"])  # Spiegazione PPD
+
+        grafico_buffer = genera_grafico_pmv_ppd(pmv, ppd)
+        st.image(grafico_buffer, caption="Relazione tra PMV e PPD")
+
+        # Download del report
+        report_pdf = genera_report_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento, pmv, ppd)
+        with open(report_pdf, "rb") as file:
+            st.download_button(
+                label="Scarica Report PDF",
+                data=file,
+                file_name="report_microclima.pdf",
+                mime="application/pdf"
+            )
+
 # Aggiungi uno stile personalizzato per migliorare il design
 st.markdown("""
     <style>
