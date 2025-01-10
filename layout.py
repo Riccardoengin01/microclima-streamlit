@@ -1,4 +1,19 @@
 import streamlit as st
+import streamlit as st
+
+# Modifica CSS per sidebar più larga e non centrata
+st.markdown("""
+    <style>
+        [data-testid="stSidebar"] {
+            width: 40%; /* Puoi regolare la percentuale per maggiore larghezza */
+            min-width: 400px; /* Imposta una larghezza minima */
+        }
+        .block-container {
+            padding-left: 5%; /* Riduce il padding per allineare al resto */
+            padding-right: 5%;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 def setup_layout(parametri_definizioni):
     st.title("Analisi del Microclima Ufficio")
