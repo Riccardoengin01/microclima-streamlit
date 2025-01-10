@@ -31,5 +31,5 @@ Questa applicazione calcola gli indici PMV (Predicted Mean Vote) e PPD (Predicte
 
 1. Clona il repository:
    ```bash
-   git clone https://github.com/tuo-username/microclima-ufficio.git
-   cd microclima-ufficio
+  git clone https://github.com/Riccardoengin01/microclima-ufficio.git
+cd microclima-ufficio
