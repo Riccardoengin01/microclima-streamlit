@@ -6,7 +6,7 @@ st.markdown("""
     <style>
         [data-testid="stSidebar"] {
             width: 60%; /* Puoi regolare la percentuale per maggiore larghezza */
-            min-width: 900px; /* Imposta una larghezza minima */
+            min-width: 1100px; /* Imposta una larghezza minima */
         }
         .block-container {
             padding-left: 5%; /* Riduce il padding per allineare al resto */
