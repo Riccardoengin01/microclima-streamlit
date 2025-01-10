@@ -17,6 +17,30 @@ from pdf_generator import genera_report_pdf
 import io
 import matplotlib.pyplot as plt
 
+import streamlit as st
+
+# CSS personalizzato per allargare la sidebar
+st.markdown("""
+    <style>
+        /* Sidebar più larga */
+        [data-testid="stSidebar"] {
+            width: 400px !important; /* Larghezza sidebar */
+            min-width: 400px !important;
+        }
+
+        /* Contenuto principale adattato */
+        [data-testid="stAppViewContainer"] {
+            margin-left: 420px; /* Sposta il contenuto principale */
+            padding: 20px;
+        }
+
+        /* Rimuove padding extra nella pagina */
+        .block-container {
+            padding: 1rem 1rem 1rem 1rem;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # Funzione per calcolare PMV e PPD basati sulle formule della norma UNI EN ISO 7730
 def calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento):
     FNPS = math.exp(16.6536 - 4030.183 / (temp_aria + 235))
