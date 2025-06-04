@@ -7,11 +7,27 @@
 
 import os
 import datetime
+import tempfile
+
+import grafici
 
 from pdf_generator import genera_report_pdf
 
 
-def test_pdf_generation_cleanup(tmp_path):
+def test_pdf_generation_cleanup(tmp_path, monkeypatch):
+    created = []
+    original = tempfile.NamedTemporaryFile
+
+    def fake_tempfile(*args, **kwargs):
+        kwargs["delete"] = False
+        kwargs["suffix"] = ".png"
+        kwargs["dir"] = tmp_path
+        f = original(**kwargs)
+        created.append(f.name)
+        return f
+
+    monkeypatch.setattr(grafici.tempfile, "NamedTemporaryFile", fake_tempfile)
+
     output_file = tmp_path / "report_microclima.pdf"
     pdf = genera_report_pdf(
         25.0,
@@ -29,6 +45,9 @@ def test_pdf_generation_cleanup(tmp_path):
     )
     assert pdf == str(output_file)
     assert os.path.exists(pdf)
+    assert len(created) == 2
+    for path in created:
+        assert not os.path.exists(path)
     os.remove(pdf)
 
 

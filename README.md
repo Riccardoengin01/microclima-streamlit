@@ -12,6 +12,7 @@ Questa applicazione calcola gli indici PMV (Predicted Mean Vote) e PPD (Predicte
 - Calcolo degli indici PMV e PPD.
 - Visualizzazione grafica della relazione tra PMV e PPD.
 - Generazione di un report PDF con parametri e grafici.
+- Il PDF include anche un grafico avanzato con PMV vs temperatura e PPD vs umidità.
 - Controllo dei parametri ambientali con limiti predefiniti.
 
 ---
