@@ -30,8 +30,11 @@ def genera_report_pdf(
 
     pdf = FPDF()
     pdf.add_page()
+    pdf.set_font("Arial", "B", 16)
+    pdf.cell(0, 10, txt="Analisi del Microclima Ufficio", ln=True, align="C")
+    pdf.ln(5)
     pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, txt="Analisi del Microclima Ufficio", ln=True, align="C")
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
     pdf.ln(10)
 
     # Parametri ambientali
@@ -56,6 +59,13 @@ def genera_report_pdf(
     pdf.cell(200, 10, txt="Grafico PMV-PPD:", ln=True)
     pdf.image(grafico_path, x=10, y=pdf.get_y() + 10, w=150)
     pdf.ln(85)
+
+    pdf.set_font("Arial", "B", 12)
+    pdf.cell(0, 10, txt="Commenti del responsabile:", ln=True)
+    comment_y = pdf.get_y()
+    pdf.rect(10, comment_y, 190, 30)
+    pdf.ln(35)
+    pdf.cell(0, 10, txt="Firma del responsabile: ____________________", ln=True)
 
     # Salva il PDF
     pdf.output(output_path)
