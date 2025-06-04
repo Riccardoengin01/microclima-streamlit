@@ -45,6 +45,17 @@ Questa applicazione calcola gli indici PMV (Predicted Mean Vote) e PPD (Predicte
    streamlit run app.py
    ```
 
+## Ambiente di sviluppo
+Per preparare l'ambiente prima di avviare i test installa tutte le dipendenze
+Python:
+
+```bash
+pip install -r requirements.txt
+```
+Se utilizzi un ambiente containerizzato, i pacchetti di sistema indicati nel
+file `packages.txt` verranno installati automaticamente tramite la
+configurazione presente nella cartella `.devcontainer`.
+
 ## Formattazione del codice
 Per garantire uno stile uniforme il progetto adotta **black** e **flake8**.
 
