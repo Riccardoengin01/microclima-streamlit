@@ -6,59 +6,27 @@
 # Per maggiori dettagli, consulta il file LICENSE o visita https://www.gnu.org/licenses/gpl-3.0.html.
 
 import streamlit as st
-import math
+from pythermalcomfort.models import pmv_ppd_iso
 from layout import setup_layout  # Importa il modulo layout
 from spiegazioni_indici import spiegazioni_indici
 from parametri_definizioni import parametri_definizioni
 from pdf_generator import genera_report_pdf
 from grafici import genera_grafico_pmv_ppd
 
-# Funzione per calcolare PMV e PPD basati sulle formule della norma UNI EN ISO 7730
+# Calcolo PMV e PPD tramite pythermalcomfort (ISO 7730)
 def calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento):
-    FNPS = math.exp(16.6536 - 4030.183 / (temp_aria + 235))
-    PA = umidita * 10 * FNPS
-    ICL = 0.155 * isolamento
-    M = metabolismo * 58.15
-
-    if ICL < 0.078:
-        FCL = 1 + 1.29 * ICL
-    else:
-        FCL = 1.05 + 0.645 * ICL
-
-    HCF = 12.1 * vel_aria ** 0.5
-    TAA = temp_aria + 273
-    TRA = temp_radiante + 273
-    TCLA = TAA + (35.5 - temp_aria) / (3.5 * (6.45 * ICL + 0.1))
-
-    P1 = ICL * FCL
-    P2 = P1 * 3.96
-    P3 = P1 * 100
-    P4 = P1 * TAA
-    P5 = 308.7 - 0.028 * M + P2 * (TRA / 100) ** 4
-
-    XN = TCLA / 100
-    XF = TCLA / 50
-    EPS = 0.0015
-    while abs(XN - XF) > EPS:
-        XF = (XF + XN) / 2
-        HCN = 2.38 * abs(100 * XF - TAA) ** 0.25
-        HC = max(HCF, HCN)
-        XN = (P5 + P4 * HC - P2 * (XF ** 4)) / (100 + P3 * HC)
-
-    TCL = 100 * XN - 273
-
-    HL1 = 3.05 * 0.001 * (5733 - 6.99 * M - PA)
-    HL2 = 0.42 * (M - 58.15) if M > 58.15 else 0
-    HL3 = 1.7 * 0.00001 * M * (5867 - PA)
-    HL4 = 0.0014 * M * (34 - temp_aria)
-    HL5 = 3.96 * FCL * (XN ** 4 - (TRA / 100) ** 4)
-    HL6 = FCL * HC * (TCL - temp_aria)
-
-    TS = 0.303 * math.exp(-0.036 * M) + 0.028
-    PMV = TS * (M - HL1 - HL2 - HL3 - HL4 - HL5 - HL6)
-    PPD = 100 - 95 * math.exp(-0.03353 * PMV ** 4 - 0.2179 * PMV ** 2)
-
-    return {"pmv": PMV, "ppd": PPD}
+    """Restituisce PMV e PPD calcolati secondo la ISO 7730."""
+    result = pmv_ppd_iso(
+        tdb=temp_aria,
+        tr=temp_radiante,
+        vr=vel_aria,
+        rh=umidita,
+        met=metabolismo,
+        clo=isolamento,
+        wme=0,
+        round_output=False,
+    )
+    return {"pmv": result.pmv, "ppd": result.ppd}
 
 
 # Layout e parametri
