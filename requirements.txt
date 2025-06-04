@@ -6,6 +6,6 @@
 # Per maggiori dettagli, consulta il file LICENSE o visita https://www.gnu.org/licenses/gpl-3.0.html.
 
 streamlit
-# pythermalcomfort
+pythermalcomfort
 fpdf
 matplotlib
