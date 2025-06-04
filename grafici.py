@@ -33,3 +33,30 @@ def genera_grafico_pmv_ppd(pmv, ppd):
         plt.savefig(temp_file.name)
     plt.close()
     return temp_file.name
+
+
+def genera_grafico_pmv_ppd_avanzato(pmv, ppd, temp_aria, umidita):
+    """Crea un layout con due grafici e restituisce il file temporaneo."""
+    plt.style.use("seaborn-v0_8-darkgrid")
+    fig, axes = plt.subplots(1, 2, figsize=(8, 4))
+
+    axes[0].scatter(temp_aria, pmv, color="blue")
+    axes[0].set_xlabel("Temperatura aria (°C)")
+    axes[0].set_ylabel("PMV")
+    axes[0].set_title("PMV vs Temperatura")
+    axes[0].axhline(0, color="gray", linestyle="--")
+    axes[0].grid(True)
+
+    axes[1].scatter(umidita, ppd, color="red")
+    axes[1].set_xlabel("Umidità relativa (%)")
+    axes[1].set_ylabel("PPD (%)")
+    axes[1].set_title("PPD vs Umidità")
+    axes[1].axhline(10, color="gray", linestyle="--")
+    axes[1].grid(True)
+
+    fig.tight_layout()
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_file:
+        fig.savefig(temp_file.name)
+    plt.close(fig)
+    return temp_file.name
