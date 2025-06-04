@@ -31,5 +31,16 @@ Questa applicazione calcola gli indici PMV (Predicted Mean Vote) e PPD (Predicte
 
 1. Clona il repository:
    ```bash
-  git clone https://github.com/Riccardoengin01/microclima-streamlit.git
-cd microclima-ufficio
+   git clone https://github.com/Riccardoengin01/microclima-streamlit.git
+   cd microclima-streamlit
+   ```
+
+2. Installa le dipendenze:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Avvia l'applicazione:
+   ```bash
+   streamlit run app.py
+   ```

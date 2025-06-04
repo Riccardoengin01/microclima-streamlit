@@ -5,9 +5,6 @@
 #
 # Per maggiori dettagli, consulta il file LICENSE o visita https://www.gnu.org/licenses/gpl-3.0.html.
 
-import os
-os.system('pip install pythermalcomfort matplotlib fpdf')
-
 import streamlit as st
 import math
 from layout import setup_layout  # Importa il modulo layout
@@ -16,8 +13,6 @@ from parametri_definizioni import parametri_definizioni
 from pdf_generator import genera_report_pdf
 import io
 import matplotlib.pyplot as plt
-
-import streamlit as st
 
 # Funzione per calcolare PMV e PPD basati sulle formule della norma UNI EN ISO 7730
 def calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento):
