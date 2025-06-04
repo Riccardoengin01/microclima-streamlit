@@ -89,6 +89,15 @@ def genera_report_pdf(
     pdf.multi_cell(0, 8, txt=spiegazioni_indici["ppd"])
     pdf.ln(5)
 
+    # Nuova pagina per il grafico
+    pdf.add_page()
+    pdf.set_font("Arial", "B", 14)
+    pdf.cell(0, 8, txt="Grafico PMV-PPD", ln=True, align="C")
+    pdf.ln(3)
+    pdf.set_font("Arial", size=10)
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(5)
+
     # Inserimento del grafico nel PDF
     pdf.cell(0, 8, txt="Grafico PMV-PPD:", ln=True)
     image_x = (pdf.w - 130) / 2
