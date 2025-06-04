@@ -7,6 +7,7 @@
 
 from fpdf import FPDF
 from grafici import genera_grafico_pmv_ppd
+import os
 
 def genera_report_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento, pmv, ppd):
     """
@@ -44,4 +45,11 @@ def genera_report_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, 
     # Salva il PDF
     pdf_path = "report_microclima.pdf"
     pdf.output(pdf_path)
+
+    # Rimuove il file temporaneo del grafico
+    try:
+        os.remove(grafico_path)
+    except OSError:
+        pass
+
     return pdf_path
