@@ -6,7 +6,6 @@
 
 ## Descrizione
 Questa applicazione calcola gli indici PMV (Predicted Mean Vote) e PPD (Predicted Percentage of Dissatisfied), utilizzati per valutare il comfort termico in ambienti chiusi. Il progetto rispetta le normative UNI EN ISO 7730 e il D.Lgs. 81/08.
-
 ---
 
 ## Funzionalità
