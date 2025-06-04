@@ -44,8 +44,21 @@ Questa applicazione calcola gli indici PMV (Predicted Mean Vote) e PPD (Predicte
    streamlit run app.py
    ```
 
+## Formattazione del codice
+Per garantire uno stile uniforme il progetto adotta **black** e **flake8**.
+
+Esegui i controlli dalla cartella principale con:
+```bash
+black .
+flake8
+```
+
+Assicurati che l'output non segnali errori prima di procedere con i test.
+
 ## Test
 Per eseguire la suite di test automatizzati utilizziamo **pytest**.
+I test andrebbero avviati solo dopo aver controllato il codice con `black` e
+`flake8`.
 
 1. Installa le dipendenze (se non lo hai già fatto):
    ```bash
