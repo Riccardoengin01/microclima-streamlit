@@ -7,6 +7,7 @@
 
 from fpdf import FPDF
 from grafici import genera_grafico_pmv_ppd
+from spiegazioni_indici import spiegazioni_indici
 import os
 
 
@@ -73,6 +74,9 @@ def genera_report_pdf(
     pdf.cell(95, 8, txt=f"{pmv:.2f}", ln=True)
     pdf.cell(95, 8, txt="Indice PPD:")
     pdf.cell(95, 8, txt=f"{ppd:.2f}%", ln=True)
+    pdf.multi_cell(0, 8, txt=spiegazioni_indici["pmv"])
+    pdf.ln(1)
+    pdf.multi_cell(0, 8, txt=spiegazioni_indici["ppd"])
     pdf.ln(5)
 
     # Inserimento del grafico nel PDF
