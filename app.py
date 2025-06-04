@@ -50,8 +50,16 @@ if inputs["submit"]:
     st.image(grafico, caption="Relazione tra PMV e PPD")
 
     report_pdf = genera_report_pdf(
-        inputs["temp_aria"], inputs["temp_radiante"], inputs["vel_aria"],
-        inputs["umidita"], inputs["metabolismo"], inputs["isolamento"], pmv, ppd
+        inputs["temp_aria"],
+        inputs["temp_radiante"],
+        inputs["vel_aria"],
+        inputs["umidita"],
+        inputs["metabolismo"],
+        inputs["isolamento"],
+        pmv,
+        ppd,
+        inputs["sede"],
+        inputs["descrizione_locale"],
     )
     with open(report_pdf, "rb") as file:
         st.download_button("Scarica Report PDF", file.read(), file_name="report_microclima.pdf", mime="application/pdf")

@@ -9,7 +9,18 @@ from fpdf import FPDF
 from grafici import genera_grafico_pmv_ppd
 import os
 
-def genera_report_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento, pmv, ppd):
+def genera_report_pdf(
+    temp_aria,
+    temp_radiante,
+    vel_aria,
+    umidita,
+    metabolismo,
+    isolamento,
+    pmv,
+    ppd,
+    sede,
+    descrizione_locale,
+):
     """
     Genera un report PDF con i risultati e il grafico PMV-PPD.
     """
@@ -29,6 +40,8 @@ def genera_report_pdf(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, 
     pdf.cell(200, 10, txt=f"Umidità relativa (%): {umidita}", ln=True)
     pdf.cell(200, 10, txt=f"Metabolismo (Met): {metabolismo}", ln=True)
     pdf.cell(200, 10, txt=f"Isolamento termico (Clo): {isolamento}", ln=True)
+    pdf.cell(200, 10, txt=f"Sede: {sede}", ln=True)
+    pdf.cell(200, 10, txt=f"Descrizione del locale: {descrizione_locale}", ln=True)
     pdf.ln(10)
 
     # Risultati

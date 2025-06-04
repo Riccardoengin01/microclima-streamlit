@@ -27,6 +27,9 @@ def setup_layout(parametri_definizioni):
 
     st.sidebar.header("Inserisci i parametri ambientali")
 
+    sede = st.sidebar.text_input("Sede")
+    descrizione_locale = st.sidebar.text_input("Descrizione del locale")
+
     temp_aria = st.sidebar.number_input(
         "Temperatura aria (°C):", min_value=10.0, max_value=40.0, value=22.0, step=0.1
     )
@@ -60,7 +63,13 @@ def setup_layout(parametri_definizioni):
     submit = st.sidebar.button("Calcola")
 
     return {
-        "temp_aria": temp_aria, "temp_radiante": temp_radiante, "vel_aria": vel_aria,
-        "umidita": umidita, "metabolismo": metabolismo, "isolamento": isolamento,
-        "submit": submit
+        "sede": sede,
+        "descrizione_locale": descrizione_locale,
+        "temp_aria": temp_aria,
+        "temp_radiante": temp_radiante,
+        "vel_aria": vel_aria,
+        "umidita": umidita,
+        "metabolismo": metabolismo,
+        "isolamento": isolamento,
+        "submit": submit,
     }
