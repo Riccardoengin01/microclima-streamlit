@@ -11,8 +11,7 @@ from layout import setup_layout  # Importa il modulo layout
 from spiegazioni_indici import spiegazioni_indici
 from parametri_definizioni import parametri_definizioni
 from pdf_generator import genera_report_pdf
-import io
-import matplotlib.pyplot as plt
+from grafici import genera_grafico_pmv_ppd
 
 # Funzione per calcolare PMV e PPD basati sulle formule della norma UNI EN ISO 7730
 def calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento):
@@ -61,28 +60,6 @@ def calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo,
 
     return {"pmv": PMV, "ppd": PPD}
 
-# Funzione per generare il grafico PMV-PPD
-def genera_grafico_pmv_ppd(pmv, ppd):
-    pmv_values = [-3, -2.5, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 2.5, 3]
-    ppd_values = [100 - 95 * math.exp(-0.03353 * x ** 4 - 0.2179 * x ** 2) for x in pmv_values]
-
-    plt.figure(figsize=(6, 4))
-    plt.plot(pmv_values, ppd_values, color='red', label="PPD (%)")
-    plt.axhline(10, color='black', linestyle='--', label="PPD accettabile (10%)")
-    plt.axvline(pmv, color='green', linestyle='--', label=f"PMV calcolato ({pmv:.2f})")
-    plt.fill_between(pmv_values, 0, ppd_values, color="cyan", alpha=0.3)
-    plt.scatter([pmv], [ppd], color='black')  # Punto calcolato
-    plt.xlabel("PMV")
-    plt.ylabel("PPD (%)")
-    plt.title("Relazione tra PMV e PPD")
-    plt.legend()
-    plt.grid()
-
-    buf = io.BytesIO()
-    plt.savefig(buf, format="png")
-    buf.seek(0)
-    plt.close()
-    return buf
 
 # Layout e parametri
 inputs = setup_layout(parametri_definizioni)
