@@ -13,8 +13,11 @@ from parametri_definizioni import parametri_definizioni
 from pdf_generator import genera_report_pdf
 from grafici import genera_grafico_pmv_ppd
 
+
 # Calcolo PMV e PPD tramite pythermalcomfort (ISO 7730)
-def calcola_microclima(temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento):
+def calcola_microclima(
+    temp_aria, temp_radiante, vel_aria, umidita, metabolismo, isolamento
+):
     """Restituisce PMV e PPD calcolati secondo la ISO 7730."""
     result = pmv_ppd_iso(
         tdb=temp_aria,
@@ -35,8 +38,12 @@ inputs = setup_layout(parametri_definizioni)
 # Calcolo e risultati
 if inputs["submit"]:
     risultati = calcola_microclima(
-        inputs["temp_aria"], inputs["temp_radiante"], inputs["vel_aria"],
-        inputs["umidita"], inputs["metabolismo"], inputs["isolamento"]
+        inputs["temp_aria"],
+        inputs["temp_radiante"],
+        inputs["vel_aria"],
+        inputs["umidita"],
+        inputs["metabolismo"],
+        inputs["isolamento"],
     )
     pmv, ppd = risultati["pmv"], risultati["ppd"]
 
@@ -62,4 +69,9 @@ if inputs["submit"]:
         inputs["descrizione_locale"],
     )
     with open(report_pdf, "rb") as file:
-        st.download_button("Scarica Report PDF", file.read(), file_name="report_microclima.pdf", mime="application/pdf")
+        st.download_button(
+            "Scarica Report PDF",
+            file.read(),
+            file_name="report_microclima.pdf",
+            mime="application/pdf",
+        )
