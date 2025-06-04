@@ -43,3 +43,15 @@ Questa applicazione calcola gli indici PMV (Predicted Mean Vote) e PPD (Predicte
    ```bash
    streamlit run app.py
    ```
+
+## Test
+Per eseguire la suite di test automatizzati utilizziamo **pytest**.
+
+1. Installa le dipendenze (se non lo hai già fatto):
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Avvia i test dalla cartella principale del progetto:
+   ```bash
+   pytest
+   ```
