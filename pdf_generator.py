@@ -9,6 +9,7 @@ from fpdf import FPDF
 from grafici import genera_grafico_pmv_ppd
 import os
 
+
 def genera_report_pdf(
     temp_aria,
     temp_radiante,
@@ -20,6 +21,7 @@ def genera_report_pdf(
     ppd,
     sede,
     descrizione_locale,
+    output_path="report_microclima.pdf",
 ):
     """
     Genera un report PDF con i risultati e il grafico PMV-PPD.
@@ -29,7 +31,7 @@ def genera_report_pdf(
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, txt="Analisi del Microclima Ufficio", ln=True, align='C')
+    pdf.cell(200, 10, txt="Analisi del Microclima Ufficio", ln=True, align="C")
     pdf.ln(10)
 
     # Parametri ambientali
@@ -56,8 +58,7 @@ def genera_report_pdf(
     pdf.ln(85)
 
     # Salva il PDF
-    pdf_path = "report_microclima.pdf"
-    pdf.output(pdf_path)
+    pdf.output(output_path)
 
     # Rimuove il file temporaneo del grafico
     try:
@@ -65,4 +66,4 @@ def genera_report_pdf(
     except OSError:
         pass
 
-    return pdf_path
+    return output_path
