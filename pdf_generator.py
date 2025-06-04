@@ -30,42 +30,64 @@ def genera_report_pdf(
 
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font("Arial", "B", 16)
-    pdf.cell(0, 10, txt="Analisi del Microclima Ufficio", ln=True, align="C")
-    pdf.ln(5)
-    pdf.set_font("Arial", size=12)
+    pdf.set_font("Arial", "B", 14)
+    pdf.cell(0, 8, txt="Analisi del Microclima Ufficio", ln=True, align="C")
+    pdf.ln(3)
+    pdf.set_font("Arial", size=10)
     pdf.line(10, pdf.get_y(), 200, pdf.get_y())
-    pdf.ln(10)
+    pdf.ln(5)
 
     # Parametri ambientali
-    pdf.cell(200, 10, txt="Parametri ambientali:", ln=True)
-    pdf.cell(200, 10, txt=f"Temperatura aria (°C): {temp_aria}", ln=True)
-    pdf.cell(200, 10, txt=f"Temperatura radiante (°C): {temp_radiante}", ln=True)
-    pdf.cell(200, 10, txt=f"Velocità aria (m/s): {vel_aria}", ln=True)
-    pdf.cell(200, 10, txt=f"Umidità relativa (%): {umidita}", ln=True)
-    pdf.cell(200, 10, txt=f"Metabolismo (Met): {metabolismo}", ln=True)
-    pdf.cell(200, 10, txt=f"Isolamento termico (Clo): {isolamento}", ln=True)
-    pdf.cell(200, 10, txt=f"Sede: {sede}", ln=True)
-    pdf.cell(200, 10, txt=f"Descrizione del locale: {descrizione_locale}", ln=True)
-    pdf.ln(10)
+    pdf.cell(0, 8, txt="Parametri ambientali:", ln=True)
+
+    labels = [
+        "Temperatura aria (°C):",
+        "Temperatura radiante (°C):",
+        "Velocità aria (m/s):",
+        "Umidità relativa (%):",
+        "Metabolismo (Met):",
+        "Isolamento termico (Clo):",
+        "Sede:",
+        "Descrizione del locale:",
+    ]
+    values = [
+        temp_aria,
+        temp_radiante,
+        vel_aria,
+        umidita,
+        metabolismo,
+        isolamento,
+        sede,
+        descrizione_locale,
+    ]
+
+    for label, value in zip(labels, values):
+        pdf.cell(95, 8, txt=label, border=0)
+        pdf.cell(95, 8, txt=str(value), ln=True)
+
+    pdf.ln(5)
 
     # Risultati
-    pdf.cell(200, 10, txt="Risultati calcolati:", ln=True)
-    pdf.cell(200, 10, txt=f"Indice PMV: {pmv:.2f}", ln=True)
-    pdf.cell(200, 10, txt=f"Indice PPD: {ppd:.2f}%", ln=True)
-    pdf.ln(10)
+    pdf.cell(0, 8, txt="Risultati calcolati:", ln=True)
+    pdf.cell(95, 8, txt="Indice PMV:")
+    pdf.cell(95, 8, txt=f"{pmv:.2f}", ln=True)
+    pdf.cell(95, 8, txt="Indice PPD:")
+    pdf.cell(95, 8, txt=f"{ppd:.2f}%", ln=True)
+    pdf.ln(5)
 
     # Inserimento del grafico nel PDF
-    pdf.cell(200, 10, txt="Grafico PMV-PPD:", ln=True)
-    pdf.image(grafico_path, x=10, y=pdf.get_y() + 10, w=150)
-    pdf.ln(85)
+    pdf.cell(0, 8, txt="Grafico PMV-PPD:", ln=True)
+    image_x = (pdf.w - 130) / 2
+    image_y = pdf.get_y() + 5
+    pdf.image(grafico_path, x=image_x, y=image_y, w=130)
+    pdf.set_y(image_y + 87)
 
-    pdf.set_font("Arial", "B", 12)
-    pdf.cell(0, 10, txt="Commenti del responsabile:", ln=True)
+    pdf.set_font("Arial", "B", 10)
+    pdf.cell(0, 8, txt="Commenti del responsabile:", ln=True)
     comment_y = pdf.get_y()
-    pdf.rect(10, comment_y, 190, 30)
-    pdf.ln(35)
-    pdf.cell(0, 10, txt="Firma del responsabile: ____________________", ln=True)
+    pdf.rect(10, comment_y, 190, 25)
+    pdf.ln(28)
+    pdf.cell(0, 8, txt="Firma del responsabile: ____________________", ln=True)
 
     # Salva il PDF
     pdf.output(output_path)
