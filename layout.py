@@ -41,6 +41,7 @@ def setup_layout(parametri_definizioni):
 
     sede = st.sidebar.text_input("Sede")
     descrizione_locale = st.sidebar.text_input("Descrizione del locale")
+    data = st.sidebar.date_input("Data")
 
     temp_aria = st.sidebar.number_input(
         "Temperatura aria (°C):", min_value=10.0, max_value=40.0, value=22.0, step=0.1
@@ -87,5 +88,6 @@ def setup_layout(parametri_definizioni):
         "umidita": umidita,
         "metabolismo": metabolismo,
         "isolamento": isolamento,
+        "data": data,
         "submit": submit,
     }
