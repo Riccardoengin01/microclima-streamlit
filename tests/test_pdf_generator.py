@@ -6,10 +6,7 @@
 # Per maggiori dettagli, consulta il file LICENSE o visita https://www.gnu.org/licenses/gpl-3.0.html.
 
 import os
-from pathlib import Path
-import sys
 
-sys.path.append(str(Path(__file__).resolve().parents[1]))
 from pdf_generator import genera_report_pdf
 
 
