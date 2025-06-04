@@ -14,6 +14,7 @@ from pdf_generator import genera_report_pdf
 
 
 def test_pdf_generation_cleanup(tmp_path):
+    output_file = tmp_path / "report_microclima.pdf"
     pdf = genera_report_pdf(
         25.0,
         25.0,
@@ -25,6 +26,8 @@ def test_pdf_generation_cleanup(tmp_path):
         5.0,
         "Sede di test",
         "Locale di prova",
+        output_path=str(output_file),
     )
+    assert pdf == str(output_file)
     assert os.path.exists(pdf)
     os.remove(pdf)
