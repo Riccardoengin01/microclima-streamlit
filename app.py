@@ -67,6 +67,7 @@ if inputs["submit"]:
         ppd,
         inputs["sede"],
         inputs["descrizione_locale"],
+        data=inputs["data"],
     )
     with open(report_pdf, "rb") as file:
         st.download_button(

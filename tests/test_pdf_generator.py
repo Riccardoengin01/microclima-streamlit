@@ -6,6 +6,7 @@
 # Per maggiori dettagli, consulta il file LICENSE o visita https://www.gnu.org/licenses/gpl-3.0.html.
 
 import os
+import datetime
 
 from pdf_generator import genera_report_pdf
 
@@ -23,6 +24,7 @@ def test_pdf_generation_cleanup(tmp_path):
         5.0,
         "Sede di test",
         "Locale di prova",
+        data=datetime.date(2024, 1, 1),
         output_path=str(output_file),
     )
     assert pdf == str(output_file)
@@ -43,6 +45,7 @@ def test_pdf_contains_explanations(tmp_path):
         5.0,
         "Sede di test",
         "Locale di prova",
+        data=datetime.date(2024, 1, 1),
         output_path=str(output_file),
     )
     assert pdf == str(output_file)
@@ -62,4 +65,5 @@ def test_pdf_contains_explanations(tmp_path):
 
     assert "Il PMV \\(Predicted Mean Vote\\)" in extracted
     assert "Il PPD \\(Predicted Percentage of Dissatisfied\\)" in extracted
+    assert "Data: 2024-01-01" in extracted
     os.remove(pdf)

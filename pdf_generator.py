@@ -9,6 +9,7 @@ from fpdf import FPDF
 from grafici import genera_grafico_pmv_ppd
 from spiegazioni_indici import spiegazioni_indici
 import os
+import datetime
 
 
 def genera_report_pdf(
@@ -23,10 +24,13 @@ def genera_report_pdf(
     sede,
     descrizione_locale,
     output_path="report_microclima.pdf",
+    data=None,
 ):
     """
     Genera un report PDF con i risultati e il grafico PMV-PPD.
     """
+    if data is None:
+        data = datetime.date.today()
     grafico_path = genera_grafico_pmv_ppd(pmv, ppd)
 
     pdf = FPDF()
@@ -37,6 +41,12 @@ def genera_report_pdf(
     pdf.set_font("Arial", size=10)
     pdf.line(10, pdf.get_y(), 200, pdf.get_y())
     pdf.ln(5)
+
+    # Informazioni generali
+    pdf.cell(60, 8, txt=f"Sede: {sede}", border=0)
+    pdf.cell(80, 8, txt=f"Descrizione: {descrizione_locale}", border=0)
+    pdf.cell(50, 8, txt=f"Data: {data}", ln=True)
+    pdf.ln(3)
 
     # Parametri ambientali
     pdf.cell(0, 8, txt="Parametri ambientali:", ln=True)
