@@ -8,7 +8,8 @@
 import streamlit as st
 
 # Modifica CSS per sidebar più larga e non centrata
-st.markdown("""
+st.markdown(
+    """
     <style>
         [data-testid="stSidebar"] {
             width: 60%; /* Puoi regolare la percentuale per maggiore larghezza */
@@ -19,9 +20,20 @@ st.markdown("""
             padding-right: 5%;
         }
     </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
+
 
 def setup_layout(parametri_definizioni):
+    """Imposta il layout della pagina e restituisce i valori inseriti.
+
+    Parametri:
+        parametri_definizioni (dict): descrizioni per i campi di input.
+
+    Ritorna:
+        dict: valori forniti dall'utente e stato del pulsante.
+    """
     st.title("Analisi del Microclima Ufficio")
     st.subheader("(UNI EN ISO 7730 e D.Lgs. 81/08)")
 
@@ -36,7 +48,11 @@ def setup_layout(parametri_definizioni):
     st.sidebar.caption(parametri_definizioni["temp_aria"])
 
     temp_radiante = st.sidebar.number_input(
-        "Temperatura radiante media (°C):", min_value=10.0, max_value=40.0, value=22.0, step=0.1
+        "Temperatura radiante media (°C):",
+        min_value=10.0,
+        max_value=40.0,
+        value=22.0,
+        step=0.1,
     )
     st.sidebar.caption(parametri_definizioni["temp_radiante"])
 
