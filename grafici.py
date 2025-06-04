@@ -29,7 +29,7 @@ def genera_grafico_pmv_ppd(pmv, ppd):
     plt.legend()
     plt.grid()
 
-    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
-    plt.savefig(temp_file.name)
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_file:
+        plt.savefig(temp_file.name)
     plt.close()
     return temp_file.name
