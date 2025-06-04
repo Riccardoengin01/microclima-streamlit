@@ -16,5 +16,5 @@ spiegazioni_indici = {
     "ppd": (
         "Il PPD (Predicted Percentage of Dissatisfied) indica la percentuale di persone "
         "insoddisfatte del comfort termico. Un PPD inferiore al 10% è generalmente considerato accettabile."
-    )
+    ),
 }
