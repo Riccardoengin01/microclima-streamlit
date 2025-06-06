@@ -54,7 +54,8 @@ pip install -r requirements.txt
 ```
 Se utilizzi un ambiente containerizzato, i pacchetti di sistema indicati nel
 file `packages.txt` verranno installati automaticamente tramite la
-configurazione presente nella cartella `.devcontainer`.
+configurazione presente nella cartella `.devcontainer`. La stessa configurazione
+provvede anche a installare i moduli Python elencati in `requirements.txt`.
 
 ## Formattazione del codice
 Per garantire uno stile uniforme il progetto adotta **black** e **flake8**.
@@ -66,6 +67,14 @@ flake8
 ```
 
 Assicurati che l'output non segnali errori prima di procedere con i test.
+
+## Preparazione ai test
+Prima di lanciare `pytest` è fondamentale installare tutte le dipendenze
+elencate in `requirements.txt`:
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Test
 Per eseguire la suite di test automatizzati utilizziamo **pytest**.
