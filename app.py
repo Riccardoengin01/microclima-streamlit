@@ -17,6 +17,7 @@ from grafici import (
 )
 import os
 from traduzioni import LABELS
+from parametri_definizioni import soglie_parametri
 
 
 # Calcolo PMV e PPD tramite pythermalcomfort (ISO 7730)
@@ -62,6 +63,22 @@ if inputs["submit"]:
     st.write(f"**{testi['ppd']}** {ppd:.2f}%")
     st.text(spiegazioni["ppd"])
 
+    lux_min, lux_max = soglie_parametri["illuminazione"]
+    db_min, db_max = soglie_parametri["impatto_acustico"]
+
+    if lux_min <= inputs["illuminazione"] <= lux_max:
+        esito_lux = testi["illum_ok"]
+    else:
+        esito_lux = testi["out_of_range"]
+
+    if db_min <= inputs["impatto_acustico"] <= db_max:
+        esito_noise = testi["noise_ok"]
+    else:
+        esito_noise = testi["out_of_range"]
+
+    st.write(esito_lux)
+    st.write(esito_noise)
+
     grafico_base = genera_grafico_pmv_ppd(pmv, ppd)
     grafico_avanzato = genera_grafico_pmv_ppd_avanzato(
         pmv, ppd, inputs["temp_aria"], inputs["umidita"]
@@ -97,6 +114,8 @@ if inputs["submit"]:
         inputs["descrizione_locale"],
         inputs["commento_responsabile"],
         inputs["firma_responsabile"],
+        esito_lux,
+        esito_noise,
         output_path=report_name,
         data=inputs["data"],
         lingua=inputs["lingua"],

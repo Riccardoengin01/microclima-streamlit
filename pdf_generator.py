@@ -36,6 +36,8 @@ def genera_report_pdf(
     descrizione_locale,
     commento_responsabile="",
     firma_responsabile="",
+    esito_illuminazione="",
+    esito_rumore="",
     output_path="report_microclima.pdf",
     data=None,
     lingua="it",
@@ -159,6 +161,10 @@ def genera_report_pdf(
     image_y = pdf.get_y() + 5
     pdf.image(grafico_lux_db_path, x=image_x, y=image_y, w=image_w)
     pdf.set_y(image_y + 70)
+    if esito_illuminazione:
+        pdf.cell(0, 8, txt=esito_illuminazione, ln=True)
+    if esito_rumore:
+        pdf.cell(0, 8, txt=esito_rumore, ln=True)
 
     # Salva il PDF
     try:
