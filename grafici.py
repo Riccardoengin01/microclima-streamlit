@@ -60,3 +60,20 @@ def genera_grafico_pmv_ppd_avanzato(pmv, ppd, temp_aria, umidita):
         fig.savefig(temp_file.name)
     plt.close(fig)
     return temp_file.name
+
+
+def genera_grafico_lux_db(lux, db):
+    """Genera un semplice grafico di illuminazione e rumore."""
+    categories = ["Lux", "dB"]
+    values = [lux, db]
+
+    plt.figure(figsize=(5, 4))
+    plt.bar(categories, values, color=["orange", "gray"])
+    plt.ylabel("Valore")
+    plt.title("Illuminazione e Rumore")
+    plt.ylim(0, max(values) * 1.2)
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_file:
+        plt.savefig(temp_file.name, bbox_inches="tight")
+    plt.close()
+    return temp_file.name

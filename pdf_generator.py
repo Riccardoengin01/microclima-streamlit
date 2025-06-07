@@ -6,7 +6,11 @@
 # Per maggiori dettagli, consulta il file LICENSE o visita https://www.gnu.org/licenses/gpl-3.0.html.
 
 from fpdf import FPDF
-from grafici import genera_grafico_pmv_ppd, genera_grafico_pmv_ppd_avanzato
+from grafici import (
+    genera_grafico_pmv_ppd,
+    genera_grafico_pmv_ppd_avanzato,
+    genera_grafico_lux_db,
+)
 from spiegazioni_indici import spiegazioni_indici, spiegazioni_indici_en
 from traduzioni import LABELS
 import os
@@ -35,7 +39,7 @@ def genera_report_pdf(
     lingua="it",
 ):
     """
-    Genera un report PDF con i risultati e due grafici riepilogativi.
+    Genera un report PDF con i risultati e tre grafici riepilogativi.
     """
     if data is None:
         data = datetime.date.today()
@@ -43,6 +47,7 @@ def genera_report_pdf(
     grafico_avanzato_path = genera_grafico_pmv_ppd_avanzato(
         pmv, ppd, temp_aria, umidita
     )
+    grafico_lux_db_path = genera_grafico_lux_db(illuminazione, impatto_acustico)
     testi = LABELS[lingua]
     spiegazioni = spiegazioni_indici if lingua == "it" else spiegazioni_indici_en
 
@@ -132,6 +137,20 @@ def genera_report_pdf(
     pdf.ln(28)
     pdf.cell(0, 8, txt="Firma del responsabile: ____________________", ln=True)
 
+    # Pagina con il grafico lux e rumore
+    pdf.add_page()
+    pdf.set_font("Arial", "B", 14)
+    pdf.cell(0, 8, txt="Illuminazione e Rumore", ln=True, align="C")
+    pdf.ln(3)
+    pdf.set_font("Arial", size=10)
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(5)
+    image_w = 100
+    image_x = (pdf.w - image_w) / 2
+    image_y = pdf.get_y() + 5
+    pdf.image(grafico_lux_db_path, x=image_x, y=image_y, w=image_w)
+    pdf.set_y(image_y + 70)
+
     # Salva il PDF
     try:
         pdf.output(output_path)
@@ -139,7 +158,7 @@ def genera_report_pdf(
         raise PdfGenerationError(f"Impossibile scrivere il file {output_path}") from exc
 
     # Rimuove i file temporanei dei grafici
-    for path in (grafico_path, grafico_avanzato_path):
+    for path in (grafico_path, grafico_avanzato_path, grafico_lux_db_path):
         try:
             os.remove(path)
         except OSError:
