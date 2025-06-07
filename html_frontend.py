@@ -6,14 +6,16 @@
 
 """Semplice frontend HTML basato su Flask."""
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
 
-@app.route("/", methods=["GET"])
+@app.route("/", methods=["GET", "POST"])
 def index():
-    """Rende la pagina principale."""
+    """Rende la pagina principale e gestisce il form."""
+    if request.method == "POST":
+        return render_template("index.html", message="Dati ricevuti")
     return render_template("index.html")
 
 

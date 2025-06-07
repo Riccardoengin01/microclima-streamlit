@@ -11,3 +11,6 @@ def test_index_page():
     client = app.test_client()
     response = client.get("/")
     assert response.status_code == 200
+
+    response_post = client.post("/")
+    assert response_post.status_code == 200

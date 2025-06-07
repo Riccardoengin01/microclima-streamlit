@@ -6,6 +6,9 @@
 </head>
 <body>
     <h1>Microclima</h1>
+    {% if message %}
+    <p>{{ message }}</p>
+    {% endif %}
     <form method="post">
         <label>Location <input type="text" name="sede"></label><br>
         <label>Description <input type="text" name="descrizione"></label><br>
