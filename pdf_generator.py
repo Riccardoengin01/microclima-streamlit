@@ -34,6 +34,8 @@ def genera_report_pdf(
     ppd,
     sede,
     descrizione_locale,
+    commento_responsabile="",
+    firma_responsabile="",
     output_path="report_microclima.pdf",
     data=None,
     lingua="it",
@@ -130,10 +132,17 @@ def genera_report_pdf(
 
     pdf.set_font("Arial", "B", 10)
     pdf.cell(0, 8, txt="Commenti del responsabile:", ln=True)
-    comment_y = pdf.get_y()
-    pdf.rect(10, comment_y, 190, 25)
-    pdf.ln(28)
-    pdf.cell(0, 8, txt="Firma del responsabile: ____________________", ln=True)
+    if commento_responsabile:
+        pdf.multi_cell(0, 8, txt=commento_responsabile)
+    else:
+        pdf.ln(8)
+    pdf.cell(
+        0,
+        8,
+        txt=f"Firma del responsabile: {firma_responsabile}",
+        ln=True,
+    )
+    pdf.ln(20)
 
     space_left = pdf.h - pdf.b_margin - pdf.get_y()
     if space_left < 125:

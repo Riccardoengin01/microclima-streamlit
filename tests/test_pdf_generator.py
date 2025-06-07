@@ -152,6 +152,33 @@ def test_graphs_on_single_page(tmp_path):
     os.remove(pdf)
 
 
+def test_comment_and_signature_present(tmp_path):
+    output_file = tmp_path / "report_microclima.pdf"
+    pdf = genera_report_pdf(
+        25.0,
+        25.0,
+        0.1,
+        50.0,
+        500.0,
+        45.0,
+        1.2,
+        0.5,
+        0.0,
+        5.0,
+        "Sede di test",
+        "Locale di prova",
+        "Test commento",
+        "Mario Rossi",
+        data=datetime.date(2024, 1, 1),
+        output_path=str(output_file),
+    )
+    reader = PyPDF2.PdfReader(pdf)
+    page_two = reader.pages[1].extract_text()
+    assert "Test commento" in page_two
+    assert "Mario Rossi" in page_two
+    os.remove(pdf)
+
+
 def test_pdf_generation_error(tmp_path, monkeypatch):
     def fake_output(self, *args, **kwargs):
         raise IOError("fail")

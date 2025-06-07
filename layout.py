@@ -96,6 +96,9 @@ def setup_layout():
     )
     st.sidebar.caption(definizioni["impatto_acustico"])
 
+    commento_responsabile = st.sidebar.text_area("Commento del responsabile")
+    firma_responsabile = st.sidebar.text_input("Firma del responsabile")
+
     submit = st.sidebar.button(testi["submit"])
 
     return {
@@ -109,6 +112,8 @@ def setup_layout():
         "isolamento": isolamento,
         "illuminazione": illuminazione,
         "impatto_acustico": impatto_acustico,
+        "commento_responsabile": commento_responsabile,
+        "firma_responsabile": firma_responsabile,
         "data": data,
         "submit": submit,
         "lingua": lang_code,
