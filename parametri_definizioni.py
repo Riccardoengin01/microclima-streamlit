@@ -39,3 +39,32 @@ parametri_definizioni = {
     - 0.5 Clo (abbigliamento leggero)
     - 1.0 Clo (abbigliamento invernale).""",
 }
+
+# Detailed parameter definitions in English
+parametri_definizioni_en = {
+    "temp_aria": """**Air temperature (°C)**:
+    The surrounding air temperature in degrees Celsius.
+    This parameter affects the perception of thermal comfort.""",
+    "temp_radiante": """**Mean radiant temperature (°C)**:
+    The average temperature of surrounding surfaces that radiate heat.
+    Includes floors, walls, ceilings and objects in the environment.""",
+    "vel_aria": """**Air speed (m/s)**:
+    The average air velocity measured in meters per second.
+    High air speed can improve the feeling of freshness.""",
+    "umidita": """**Relative humidity (%)**:
+    The percentage of moisture in the air compared to the maximum possible at a given temperature.
+    High humidity reduces the cooling effect of perspiration.""",
+    "metabolismo": """**Metabolic rate (Met)**:
+    The energy produced by the human body while active.
+    1 Met corresponds to a person seated at rest (~58 W/m²).
+    Typical values:
+    - 0.8-1.0 Met (seated)
+    - 1.5 Met (light walking)
+    - 4.0 Met (intense physical activity).""",
+    "isolamento": """**Thermal insulation (Clo)**:
+    The thermal resistance provided by clothing.
+    1 Clo corresponds to a full formal suit.
+    Typical values:
+    - 0.5 Clo (light clothing)
+    - 1.0 Clo (winter clothing).""",
+}

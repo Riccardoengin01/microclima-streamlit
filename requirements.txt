@@ -9,3 +9,5 @@ streamlit
 pythermalcomfort
 fpdf
 matplotlib
+
+flask
