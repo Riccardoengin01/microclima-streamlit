@@ -8,8 +8,8 @@
 
 LABELS = {
     "it": {
-        "title": "Analisi del Microclima Ufficio",
-        "subheader": "(UNI EN ISO 7730 e D.Lgs. 81/08)",
+        "title": "Analisi ambientale ufficio",
+        "subheader": "",
         "sidebar_header": "Inserisci i parametri ambientali",
         "location": "Sede",
         "description": "Descrizione del locale",
@@ -28,8 +28,8 @@ LABELS = {
         "ppd": "Indice PPD:",
     },
     "en": {
-        "title": "Office Microclimate Analysis",
-        "subheader": "(UNI EN ISO 7730 and Legislative Decree 81/08)",
+        "title": "Office Environmental Analysis",
+        "subheader": "",
         "sidebar_header": "Enter environmental parameters",
         "location": "Location",
         "description": "Room description",
