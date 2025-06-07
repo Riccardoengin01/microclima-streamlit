@@ -90,6 +90,12 @@ pip install -r requirements.txt
 ```
 Questo comando installa anche `pytest`, necessario per avviare la suite di test.
 
+Terminata l'installazione puoi eseguire i test con:
+
+```bash
+pytest
+```
+
 ## Test
 Per eseguire la suite di test automatizzati utilizziamo **pytest**.
 I test andrebbero avviati solo dopo aver controllato il codice con `black` e
@@ -182,6 +188,12 @@ Before running `pytest` it is essential to install all dependencies listed in `r
 pip install -r requirements.txt
 ```
 This command also installs `pytest`, needed to run the test suite.
+
+After installing the dependencies you can run the tests with:
+
+```bash
+pytest
+```
 
 ### Tests
 We use **pytest** to run the automated test suite. Tests should be run only after the code has been checked with `black` and `flake8`.
