@@ -27,7 +27,8 @@ Questa applicazione calcola gli indici PMV (Predicted Mean Vote) e PPD (Predicte
   - `pythermalcomfort`
   - `matplotlib`
   - `fpdf`
-- Tutte le dipendenze possono essere installate tramite il file `requirements.txt`.
+- Tutte le dipendenze principali possono essere installate tramite il file `requirements.txt`.
+- I pacchetti per test e lint sono elencati in `requirements-dev.txt`.
 
 ---
 
@@ -39,12 +40,17 @@ Questa applicazione calcola gli indici PMV (Predicted Mean Vote) e PPD (Predicte
    cd microclima-streamlit
    ```
 
-2. Installa le dipendenze:
+2. Installa le dipendenze principali:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Avvia l'applicazione:
+3. Installa le dipendenze per test e lint:
+   ```bash
+   pip install -r requirements-dev.txt
+   ```
+
+4. Avvia l'applicazione:
    ```bash
    streamlit run app.py
    ```
@@ -64,6 +70,7 @@ Python:
 
 ```bash
 pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 Se utilizzi un ambiente containerizzato, i pacchetti di sistema indicati nel
 file `packages.txt` verranno installati automaticamente tramite la
@@ -83,12 +90,13 @@ Assicurati che l'output non segnali errori prima di procedere con i test.
 
 ## Preparazione ai test
 Prima di lanciare `pytest` è fondamentale installare tutte le dipendenze
-elencate in `requirements.txt`:
+elencate in `requirements.txt` e `requirements-dev.txt`:
 
 ```bash
 pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
-Questo comando installa anche `pytest`, necessario per avviare la suite di test.
+Questi comandi installano anche `pytest`, necessario per avviare la suite di test.
 
 Terminata l'installazione puoi eseguire i test con:
 
@@ -104,6 +112,7 @@ I test andrebbero avviati solo dopo aver controllato il codice con `black` e
 1. Installa le dipendenze (se non lo hai già fatto):
    ```bash
    pip install -r requirements.txt
+   pip install -r requirements-dev.txt
    ```
 2. Avvia i test dalla cartella principale del progetto:
    ```bash
@@ -134,7 +143,8 @@ This application calculates the PMV (Predicted Mean Vote) and PPD (Predicted Per
   - `pythermalcomfort`
   - `matplotlib`
   - `fpdf`
-- All dependencies can be installed via the `requirements.txt` file.
+- All main dependencies can be installed via the `requirements.txt` file.
+- Packages for testing and linting are listed in `requirements-dev.txt`.
 
 ### Installation
 1. Clone the repository:
@@ -143,12 +153,17 @@ This application calculates the PMV (Predicted Mean Vote) and PPD (Predicted Per
    cd microclima-streamlit
    ```
 
-2. Install dependencies:
+2. Install main dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Run the application:
+3. Install test and lint dependencies:
+   ```bash
+   pip install -r requirements-dev.txt
+   ```
+
+4. Run the application:
    ```bash
    streamlit run app.py
    ```
@@ -167,6 +182,7 @@ Before running the tests install all Python dependencies:
 
 ```bash
 pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 If you use a containerized environment, the system packages listed in `packages.txt` will be installed automatically via the `.devcontainer` configuration. The same configuration also installs the Python modules listed in `requirements.txt`.
 
@@ -182,12 +198,13 @@ flake8
 Make sure the output does not report errors before continuing with the tests.
 
 ### Test preparation
-Before running `pytest` it is essential to install all dependencies listed in `requirements.txt`:
+Before running `pytest` it is essential to install all dependencies listed in `requirements.txt` and `requirements-dev.txt`:
 
 ```bash
 pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
-This command also installs `pytest`, needed to run the test suite.
+These commands also install `pytest`, needed to run the test suite.
 
 After installing the dependencies you can run the tests with:
 
@@ -201,6 +218,7 @@ We use **pytest** to run the automated test suite. Tests should be run only afte
 1. Install the dependencies (if you haven't already):
    ```bash
    pip install -r requirements.txt
+   pip install -r requirements-dev.txt
    ```
 2. Run the tests from the project root:
    ```bash
