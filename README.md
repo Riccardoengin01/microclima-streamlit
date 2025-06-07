@@ -45,6 +45,15 @@ Questa applicazione calcola gli indici PMV (Predicted Mean Vote) e PPD (Predicte
    streamlit run app.py
    ```
 
+### Frontend HTML (alternativa)
+In alternativa all'interfaccia Streamlit puoi eseguire un semplice frontend HTML basato su Flask:
+
+```bash
+python html_frontend.py
+```
+
+Per cambiare l'interfaccia modifica il file `templates/index.html` e riavvia il server dopo aver salvato le modifiche.
+
 ## Ambiente di sviluppo
 Per preparare l'ambiente prima di avviare i test installa tutte le dipendenze
 Python:
