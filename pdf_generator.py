@@ -36,7 +36,9 @@ def genera_report_pdf(
     if data is None:
         data = datetime.date.today()
     grafico_path = genera_grafico_pmv_ppd(pmv, ppd)
-    grafico_avanzato_path = genera_grafico_pmv_ppd_avanzato(pmv, ppd, temp_aria, umidita)
+    grafico_avanzato_path = genera_grafico_pmv_ppd_avanzato(
+        pmv, ppd, temp_aria, umidita
+    )
 
     pdf = FPDF()
     pdf.add_page()

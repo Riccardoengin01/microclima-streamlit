@@ -55,7 +55,9 @@ def _scrivi_csv(percorso: Path, campi: List[str], righe: List[Dict[str, str]]) -
         raise CSVFileError(f"Impossibile scrivere il file {percorso}") from exc
 
 
-def _prossimo_id(attivi: List[Dict[str, str]], archivio: List[Dict[str, str]], villa: str) -> str:
+def _prossimo_id(
+    attivi: List[Dict[str, str]], archivio: List[Dict[str, str]], villa: str
+) -> str:
     """Calcola il prossimo ID disponibile per la villa specificata."""
     massimo = 0
     for riga in attivi + archivio:
@@ -97,7 +99,9 @@ def inserisci_oggetto(
     return nuovo_id
 
 
-def cerca_per_id(identificativo: str, path_attivi: str = "oggetti_attivi.csv") -> Optional[Dict[str, str]]:
+def cerca_per_id(
+    identificativo: str, path_attivi: str = "oggetti_attivi.csv"
+) -> Optional[Dict[str, str]]:
     pa = Path(path_attivi)
     attivi = _leggi_csv(pa, CAMPI_ATTIVI)
     for riga in attivi:
@@ -106,13 +110,17 @@ def cerca_per_id(identificativo: str, path_attivi: str = "oggetti_attivi.csv") -
     return None
 
 
-def lista_per_villa(villa: str, path_attivi: str = "oggetti_attivi.csv") -> List[Dict[str, str]]:
+def lista_per_villa(
+    villa: str, path_attivi: str = "oggetti_attivi.csv"
+) -> List[Dict[str, str]]:
     pa = Path(path_attivi)
     attivi = _leggi_csv(pa, CAMPI_ATTIVI)
     return [r for r in attivi if r.get("villa") == villa]
 
 
-def lista_per_proprietario(proprietario: str, path_attivi: str = "oggetti_attivi.csv") -> List[Dict[str, str]]:
+def lista_per_proprietario(
+    proprietario: str, path_attivi: str = "oggetti_attivi.csv"
+) -> List[Dict[str, str]]:
     pa = Path(path_attivi)
     attivi = _leggi_csv(pa, CAMPI_ATTIVI)
     return [r for r in attivi if r.get("proprietario") == proprietario]
