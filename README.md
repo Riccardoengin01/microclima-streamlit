@@ -83,6 +83,7 @@ elencate in `requirements.txt`:
 ```bash
 pip install -r requirements.txt
 ```
+Questo comando installa anche `pytest`, necessario per avviare la suite di test.
 
 ## Test
 Per eseguire la suite di test automatizzati utilizziamo **pytest**.
