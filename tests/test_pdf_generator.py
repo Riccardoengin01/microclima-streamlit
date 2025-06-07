@@ -50,7 +50,7 @@ def test_pdf_generation_cleanup(tmp_path, monkeypatch):
     )
     assert pdf == str(output_file)
     assert os.path.exists(pdf)
-    assert len(created) == 2
+    assert len(created) == 3
     for path in created:
         assert not os.path.exists(path)
     os.remove(pdf)
@@ -97,7 +97,7 @@ def test_pdf_contains_explanations(tmp_path):
     os.remove(pdf)
 
 
-def test_pdf_has_two_pages(tmp_path):
+def test_pdf_has_three_pages(tmp_path):
     output_file = tmp_path / "report_microclima.pdf"
     pdf = genera_report_pdf(
         25.0,
@@ -119,7 +119,7 @@ def test_pdf_has_two_pages(tmp_path):
     with open(pdf, "rb") as file:
         content = file.read()
 
-    assert content.count(b"/Type /Page") >= 2
+    assert content.count(b"/Type /Page") >= 3
     os.remove(pdf)
 
 
