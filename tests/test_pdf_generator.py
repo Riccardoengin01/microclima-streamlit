@@ -46,6 +46,8 @@ def test_pdf_generation_cleanup(tmp_path, monkeypatch):
         5.0,
         "Sede di test",
         "Locale di prova",
+        "Illuminazione adeguata",
+        "Rumore nei limiti",
         data=datetime.date(2024, 1, 1),
         output_path=str(output_file),
     )
@@ -72,6 +74,8 @@ def test_pdf_contains_explanations(tmp_path):
         5.0,
         "Sede di test",
         "Locale di prova",
+        "Illuminazione adeguata",
+        "Rumore nei limiti",
         data=datetime.date(2024, 1, 1),
         output_path=str(output_file),
     )
@@ -95,6 +99,8 @@ def test_pdf_contains_explanations(tmp_path):
     assert "Data: 2024-01-01" in extracted
     assert "Illuminazione" in extracted
     assert "Impatto acustico" in extracted
+    assert "Illuminazione adeguata" in extracted
+    assert "Rumore nei limiti" in extracted
     os.remove(pdf)
 
 

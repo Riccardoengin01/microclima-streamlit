@@ -28,6 +28,9 @@ LABELS = {
         "results": "Risultati",
         "pmv": "Indice PMV:",
         "ppd": "Indice PPD:",
+        "illum_ok": "Illuminazione adeguata",
+        "noise_ok": "Rumore nei limiti",
+        "out_of_range": "fuori soglia",
     },
     "en": {
         "title": "Office Environmental Analysis",
@@ -50,5 +53,8 @@ LABELS = {
         "results": "Results",
         "pmv": "PMV index:",
         "ppd": "PPD index:",
+        "illum_ok": "Lighting adequate",
+        "noise_ok": "Noise within limits",
+        "out_of_range": "out of range",
     },
 }

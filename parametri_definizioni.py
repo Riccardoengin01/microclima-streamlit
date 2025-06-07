@@ -80,3 +80,9 @@ parametri_definizioni_en = {
     The noise level in the environment expressed in decibels.
     Excessive noise can cause discomfort and stress.""",
 }
+
+# Soglie consigliate per alcuni parametri
+soglie_parametri = {
+    "illuminazione": (300, 1000),  # lux
+    "impatto_acustico": (30, 55),  # dB
+}

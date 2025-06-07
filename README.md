@@ -13,6 +13,7 @@ Questa applicazione calcola gli indici PMV (Predicted Mean Vote) e PPD (Predicte
 - Generazione di un report PDF con parametri e grafici.
 - Il PDF include anche un grafico avanzato con PMV vs temperatura e PPD vs umidità.
 - Controllo dei parametri ambientali con limiti predefiniti.
+- Le soglie consigliate sono 300-1000 lux per l'illuminazione e 30-55 dB per il rumore.
 
 ### Parametri ambientali
 - Un'adeguata illuminazione migliora la concentrazione e riduce l'affaticamento visivo.

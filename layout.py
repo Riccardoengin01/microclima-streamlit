@@ -10,6 +10,7 @@ from traduzioni import LABELS
 from parametri_definizioni import (
     parametri_definizioni,
     parametri_definizioni_en,
+    soglie_parametri,
 )
 
 # Modifica CSS per sidebar più larga e non centrata
@@ -90,11 +91,21 @@ def setup_layout():
         testi["lighting"], min_value=0.0, max_value=2000.0, value=500.0, step=1.0
     )
     st.sidebar.caption(definizioni["illuminazione"])
+    lux_min, lux_max = soglie_parametri["illuminazione"]
+    if lang_code == "it":
+        st.sidebar.caption(f"Soglia consigliata {lux_min}-{lux_max} lux")
+    else:
+        st.sidebar.caption(f"Recommended range {lux_min}-{lux_max} lux")
 
     impatto_acustico = st.sidebar.number_input(
         testi["noise"], min_value=30.0, max_value=120.0, value=50.0, step=1.0
     )
     st.sidebar.caption(definizioni["impatto_acustico"])
+    db_min, db_max = soglie_parametri["impatto_acustico"]
+    if lang_code == "it":
+        st.sidebar.caption(f"Soglia consigliata {db_min}-{db_max} dB")
+    else:
+        st.sidebar.caption(f"Recommended range {db_min}-{db_max} dB")
 
     commento_responsabile = st.sidebar.text_area("Commento del responsabile")
     firma_responsabile = st.sidebar.text_input("Firma del responsabile")
