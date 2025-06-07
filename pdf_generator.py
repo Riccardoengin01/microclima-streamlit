@@ -122,13 +122,11 @@ def genera_report_pdf(
 
     # Inserimento dei grafici nel PDF
     pdf.cell(0, 8, txt="Grafici:", ln=True)
-    image_w = 100
-    image_x = (pdf.w - image_w) / 2
+    image_w = 90
     image_y = pdf.get_y() + 5
-    pdf.image(grafico_path, x=image_x, y=image_y, w=image_w)
-    image_y2 = image_y + 70
-    pdf.image(grafico_avanzato_path, x=image_x, y=image_y2, w=image_w)
-    pdf.set_y(image_y2 + 70)
+    pdf.image(grafico_path, x=10, y=image_y, w=image_w)
+    pdf.image(grafico_avanzato_path, x=110, y=image_y, w=image_w)
+    pdf.set_y(image_y + 70)
 
     pdf.set_font("Arial", "B", 10)
     pdf.cell(0, 8, txt="Commenti del responsabile:", ln=True)
@@ -137,8 +135,10 @@ def genera_report_pdf(
     pdf.ln(28)
     pdf.cell(0, 8, txt="Firma del responsabile: ____________________", ln=True)
 
-    # Pagina con il grafico lux e rumore
-    pdf.add_page()
+    space_left = pdf.h - pdf.b_margin - pdf.get_y()
+    if space_left < 125:
+        pdf.add_page()
+
     pdf.set_font("Arial", "B", 14)
     pdf.cell(0, 8, txt="Illuminazione e Rumore", ln=True, align="C")
     pdf.ln(3)
