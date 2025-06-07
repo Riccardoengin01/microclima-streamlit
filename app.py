@@ -68,6 +68,8 @@ if inputs["submit"]:
         inputs["umidita"],
         inputs["metabolismo"],
         inputs["isolamento"],
+        inputs["illuminazione"],
+        inputs["impatto_acustico"],
         pmv,
         ppd,
         inputs["sede"],

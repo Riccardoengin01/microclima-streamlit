@@ -22,6 +22,8 @@ def genera_report_pdf(
     temp_radiante,
     vel_aria,
     umidita,
+    illuminazione,
+    impatto_acustico,
     metabolismo,
     isolamento,
     pmv,
@@ -69,6 +71,8 @@ def genera_report_pdf(
         testi["humidity"],
         testi["metabolism"],
         testi["insulation"],
+        testi["lighting"],
+        testi["noise"],
         testi["location"] + ":",
         testi["description"] + ":",
     ]
@@ -79,6 +83,8 @@ def genera_report_pdf(
         umidita,
         metabolismo,
         isolamento,
+        illuminazione,
+        impatto_acustico,
         sede,
         descrizione_locale,
     ]
