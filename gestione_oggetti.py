@@ -29,6 +29,7 @@ CAMPI_ARCHIVIO = CAMPI_ATTIVI + ["stato", "intestatario", "data_ritiro"]
 
 
 def _leggi_csv(percorso: Path, campi: List[str]) -> List[Dict[str, str]]:
+    """Legge il file CSV e restituisce le righe come lista di dizionari."""
     if not percorso.exists():
         return []
     with percorso.open(newline="", encoding="utf-8") as f:
@@ -37,6 +38,7 @@ def _leggi_csv(percorso: Path, campi: List[str]) -> List[Dict[str, str]]:
 
 
 def _scrivi_csv(percorso: Path, campi: List[str], righe: List[Dict[str, str]]) -> None:
+    """Scrive l'elenco di dizionari nel file CSV indicato."""
     with percorso.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=campi)
         writer.writerows(righe)
@@ -45,6 +47,7 @@ def _scrivi_csv(percorso: Path, campi: List[str], righe: List[Dict[str, str]]) -
 def _prossimo_id(
     attivi: List[Dict[str, str]], archivio: List[Dict[str, str]], villa: str
 ) -> str:
+    """Calcola il prossimo ID disponibile per la villa specificata."""
     massimo = 0
     for riga in attivi + archivio:
         try:
