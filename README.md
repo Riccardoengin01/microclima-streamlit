@@ -14,6 +14,10 @@ Questa applicazione calcola gli indici PMV (Predicted Mean Vote) e PPD (Predicte
 - Il PDF include anche un grafico avanzato con PMV vs temperatura e PPD vs umidità.
 - Controllo dei parametri ambientali con limiti predefiniti.
 
+### Parametri ambientali
+- Un'adeguata illuminazione migliora la concentrazione e riduce l'affaticamento visivo.
+- Un eccessivo rumore può generare stress e distogliere l'attenzione.
+
 ---
 
 ## Requisiti di Sistema
