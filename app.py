@@ -10,7 +10,12 @@ from pythermalcomfort.models import pmv_ppd_iso
 from layout import setup_layout
 from spiegazioni_indici import spiegazioni_indici, spiegazioni_indici_en
 from pdf_generator import genera_report_pdf
-from grafici import genera_grafico_pmv_ppd
+from grafici import (
+    genera_grafico_pmv_ppd,
+    genera_grafico_pmv_ppd_avanzato,
+    genera_grafico_lux_db,
+)
+import os
 from traduzioni import LABELS
 
 
@@ -57,8 +62,24 @@ if inputs["submit"]:
     st.write(f"**{testi['ppd']}** {ppd:.2f}%")
     st.text(spiegazioni["ppd"])
 
-    grafico = genera_grafico_pmv_ppd(pmv, ppd)
-    st.image(grafico, caption="Relazione tra PMV e PPD")
+    grafico_base = genera_grafico_pmv_ppd(pmv, ppd)
+    grafico_avanzato = genera_grafico_pmv_ppd_avanzato(
+        pmv, ppd, inputs["temp_aria"], inputs["umidita"]
+    )
+    grafico_lux_db = genera_grafico_lux_db(
+        inputs["illuminazione"], inputs["impatto_acustico"]
+    )
+
+    col1, col2, col3 = st.columns(3)
+    col1.image(grafico_base, caption="Relazione tra PMV e PPD")
+    col2.image(grafico_avanzato, caption="Grafico avanzato PMV-PPD")
+    col3.image(grafico_lux_db, caption="Illuminazione e Rumore")
+
+    for path in (grafico_base, grafico_avanzato, grafico_lux_db):
+        try:
+            os.remove(path)
+        except OSError:
+            pass
 
     report_name = f"report_{inputs['sede'].replace(' ', '_')}_{inputs['descrizione_locale'].replace(' ', '_')}.pdf"
     report_pdf = genera_report_pdf(
