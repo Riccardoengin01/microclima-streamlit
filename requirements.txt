@@ -10,4 +10,6 @@ pythermalcomfort
 fpdf
 matplotlib
 
+PyPDF2
+
 flask

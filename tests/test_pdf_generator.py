@@ -13,6 +13,7 @@ import grafici
 import pdf_generator
 from fpdf import FPDF
 import pytest
+import PyPDF2
 
 from pdf_generator import genera_report_pdf
 
@@ -120,6 +121,34 @@ def test_pdf_has_three_pages(tmp_path):
         content = file.read()
 
     assert content.count(b"/Type /Page") >= 3
+    os.remove(pdf)
+
+
+def test_graphs_on_single_page(tmp_path):
+    output_file = tmp_path / "report_microclima.pdf"
+    pdf = genera_report_pdf(
+        25.0,
+        25.0,
+        0.1,
+        50.0,
+        500.0,
+        45.0,
+        1.2,
+        0.5,
+        0.0,
+        5.0,
+        "Sede di test",
+        "Locale di prova",
+        data=datetime.date(2024, 1, 1),
+        output_path=str(output_file),
+    )
+    reader = PyPDF2.PdfReader(pdf)
+    assert len(reader.pages) >= 3
+    page_two = reader.pages[1].extract_text()
+    assert "Grafici PMV-PPD" in page_two
+    assert "Firma del responsabile" in page_two
+    page_three = reader.pages[2].extract_text()
+    assert "Illuminazione e Rumore" in page_three
     os.remove(pdf)
 
 
