@@ -102,3 +102,93 @@ I test andrebbero avviati solo dopo aver controllato il codice con `black` e
 ## Integrazione continua
 I test e i controlli di formattazione vengono eseguiti automaticamente
 tramite GitHub Actions ad ogni push o pull request.
+
+---
+
+## English version
+
+### Description
+This application calculates the PMV (Predicted Mean Vote) and PPD (Predicted Percentage of Dissatisfied) indices used to evaluate indoor thermal comfort. Calculations rely on the **pythermalcomfort** library and comply with UNI EN ISO 7730 and Italian D.Lgs. 81/08.
+
+### Features
+- Calculation of PMV and PPD indices.
+- Graphical visualization of the relationship between PMV and PPD.
+- Generation of a PDF report with parameters and charts.
+- The PDF also includes an advanced plot with PMV vs temperature and PPD vs humidity.
+- Environmental parameters check with predefined limits.
+
+### System Requirements
+- **Python 3.8+**
+- Required libraries:
+  - `pythermalcomfort`
+  - `matplotlib`
+  - `fpdf`
+- All dependencies can be installed via the `requirements.txt` file.
+
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Riccardoengin01/microclima-streamlit.git
+   cd microclima-streamlit
+   ```
+
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Run the application:
+   ```bash
+   streamlit run app.py
+   ```
+
+### HTML Frontend (alternative)
+As an alternative to the Streamlit interface you can run a simple Flask-based HTML frontend:
+
+```bash
+python html_frontend.py
+```
+
+To change the interface edit `templates/index.html` and restart the server after saving.
+
+### Development environment
+Before running the tests install all Python dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+If you use a containerized environment, the system packages listed in `packages.txt` will be installed automatically via the `.devcontainer` configuration. The same configuration also installs the Python modules listed in `requirements.txt`.
+
+### Code formatting
+To ensure a consistent style the project adopts **black** and **flake8**.
+
+Run the checks from the project root:
+```bash
+black .
+flake8
+```
+
+Make sure the output does not report errors before continuing with the tests.
+
+### Test preparation
+Before running `pytest` it is essential to install all dependencies listed in `requirements.txt`:
+
+```bash
+pip install -r requirements.txt
+```
+This command also installs `pytest`, needed to run the test suite.
+
+### Tests
+We use **pytest** to run the automated test suite. Tests should be run only after the code has been checked with `black` and `flake8`.
+
+1. Install the dependencies (if you haven't already):
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Run the tests from the project root:
+   ```bash
+   pytest
+   ```
+
+### Continuous integration
+Tests and formatting checks are automatically executed through GitHub Actions on every push or pull request.
