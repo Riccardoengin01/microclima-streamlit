@@ -6,6 +6,11 @@
 # Per maggiori dettagli, consulta il file LICENSE o visita https://www.gnu.org/licenses/gpl-3.0.html.
 
 import streamlit as st
+from traduzioni import LABELS
+from parametri_definizioni import (
+    parametri_definizioni,
+    parametri_definizioni_en,
+)
 
 # Modifica CSS per sidebar più larga e non centrata
 st.markdown(
@@ -25,59 +30,63 @@ st.markdown(
 )
 
 
-def setup_layout(parametri_definizioni):
+def setup_layout():
     """Imposta il layout della pagina e restituisce i valori inseriti.
-
-    Parametri:
-        parametri_definizioni (dict): descrizioni per i campi di input.
 
     Ritorna:
         dict: valori forniti dall'utente e stato del pulsante.
     """
-    st.title("Analisi del Microclima Ufficio")
-    st.subheader("(UNI EN ISO 7730 e D.Lgs. 81/08)")
+    lingua_sel = st.sidebar.selectbox("Lingua", ["Italiano", "English"])
+    lang_code = "it" if lingua_sel == "Italiano" else "en"
+    testi = LABELS[lang_code]
+    definizioni = (
+        parametri_definizioni if lang_code == "it" else parametri_definizioni_en
+    )
 
-    st.sidebar.header("Inserisci i parametri ambientali")
+    st.title(testi["title"])
+    st.subheader(testi["subheader"])
 
-    sede = st.sidebar.text_input("Sede")
-    descrizione_locale = st.sidebar.text_input("Descrizione del locale")
-    data = st.sidebar.date_input("Data")
+    st.sidebar.header(testi["sidebar_header"])
+
+    sede = st.sidebar.text_input(testi["location"])
+    descrizione_locale = st.sidebar.text_input(testi["description"])
+    data = st.sidebar.date_input(testi["date"])
 
     temp_aria = st.sidebar.number_input(
-        "Temperatura aria (°C):", min_value=10.0, max_value=40.0, value=22.0, step=0.1
+        testi["air_temp"], min_value=10.0, max_value=40.0, value=22.0, step=0.1
     )
-    st.sidebar.caption(parametri_definizioni["temp_aria"])
+    st.sidebar.caption(definizioni["temp_aria"])
 
     temp_radiante = st.sidebar.number_input(
-        "Temperatura radiante media (°C):",
+        testi["rad_temp"],
         min_value=10.0,
         max_value=40.0,
         value=22.0,
         step=0.1,
     )
-    st.sidebar.caption(parametri_definizioni["temp_radiante"])
+    st.sidebar.caption(definizioni["temp_radiante"])
 
     vel_aria = st.sidebar.number_input(
-        "Velocità aria (m/s):", min_value=0.0, max_value=1.0, value=0.1, step=0.1
+        testi["air_speed"], min_value=0.0, max_value=1.0, value=0.1, step=0.1
     )
-    st.sidebar.caption(parametri_definizioni["vel_aria"])
+    st.sidebar.caption(definizioni["vel_aria"])
 
     umidita = st.sidebar.number_input(
-        "Umidità relativa (%):", min_value=30.0, max_value=70.0, value=50.0, step=1.0
+        testi["humidity"], min_value=30.0, max_value=70.0, value=50.0, step=1.0
     )
-    st.sidebar.caption(parametri_definizioni["umidita"])
+    st.sidebar.caption(definizioni["umidita"])
 
     metabolismo = st.sidebar.number_input(
-        "Metabolismo (Met):", min_value=0.8, max_value=4.0, value=1.2, step=0.1
+        testi["metabolism"], min_value=0.8, max_value=4.0, value=1.2, step=0.1
     )
-    st.sidebar.caption(parametri_definizioni["metabolismo"])
+    st.sidebar.caption(definizioni["metabolismo"])
 
     isolamento = st.sidebar.number_input(
-        "Isolamento termico (Clo):", min_value=0.0, max_value=2.0, value=0.5, step=0.1
+        testi["insulation"], min_value=0.0, max_value=2.0, value=0.5, step=0.1
     )
-    st.sidebar.caption(parametri_definizioni["isolamento"])
+    st.sidebar.caption(definizioni["isolamento"])
 
-    submit = st.sidebar.button("Calcola")
+    submit = st.sidebar.button(testi["submit"])
 
     return {
         "sede": sede,
@@ -90,4 +99,5 @@ def setup_layout(parametri_definizioni):
         "isolamento": isolamento,
         "data": data,
         "submit": submit,
+        "lingua": lang_code,
     }

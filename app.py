@@ -7,11 +7,11 @@
 
 import streamlit as st
 from pythermalcomfort.models import pmv_ppd_iso
-from layout import setup_layout  # Importa il modulo layout
-from spiegazioni_indici import spiegazioni_indici
-from parametri_definizioni import parametri_definizioni
+from layout import setup_layout
+from spiegazioni_indici import spiegazioni_indici, spiegazioni_indici_en
 from pdf_generator import genera_report_pdf
 from grafici import genera_grafico_pmv_ppd
+from traduzioni import LABELS
 
 
 # Calcolo PMV e PPD tramite pythermalcomfort (ISO 7730)
@@ -33,7 +33,7 @@ def calcola_microclima(
 
 
 # Layout e parametri
-inputs = setup_layout(parametri_definizioni)
+inputs = setup_layout()
 
 # Calcolo e risultati
 if inputs["submit"]:
@@ -47,15 +47,20 @@ if inputs["submit"]:
     )
     pmv, ppd = risultati["pmv"], risultati["ppd"]
 
-    st.subheader("Risultati")
-    st.write(f"**Indice PMV:** {pmv:.2f}")
-    st.text(spiegazioni_indici["pmv"])
-    st.write(f"**Indice PPD:** {ppd:.2f}%")
-    st.text(spiegazioni_indici["ppd"])
+    testi = LABELS[inputs["lingua"]]
+    spiegazioni = (
+        spiegazioni_indici if inputs["lingua"] == "it" else spiegazioni_indici_en
+    )
+    st.subheader(testi["results"])
+    st.write(f"**{testi['pmv']}** {pmv:.2f}")
+    st.text(spiegazioni["pmv"])
+    st.write(f"**{testi['ppd']}** {ppd:.2f}%")
+    st.text(spiegazioni["ppd"])
 
     grafico = genera_grafico_pmv_ppd(pmv, ppd)
     st.image(grafico, caption="Relazione tra PMV e PPD")
 
+    report_name = f"report_{inputs['sede'].replace(' ', '_')}_{inputs['descrizione_locale'].replace(' ', '_')}.pdf"
     report_pdf = genera_report_pdf(
         inputs["temp_aria"],
         inputs["temp_radiante"],
@@ -67,12 +72,14 @@ if inputs["submit"]:
         ppd,
         inputs["sede"],
         inputs["descrizione_locale"],
+        output_path=report_name,
         data=inputs["data"],
+        lingua=inputs["lingua"],
     )
     with open(report_pdf, "rb") as file:
         st.download_button(
-            "Scarica Report PDF",
+            LABELS[inputs["lingua"]]["download"],
             file.read(),
-            file_name="report_microclima.pdf",
+            file_name=report_name,
             mime="application/pdf",
         )

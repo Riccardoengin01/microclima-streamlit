@@ -7,7 +7,8 @@
 
 from fpdf import FPDF
 from grafici import genera_grafico_pmv_ppd, genera_grafico_pmv_ppd_avanzato
-from spiegazioni_indici import spiegazioni_indici
+from spiegazioni_indici import spiegazioni_indici, spiegazioni_indici_en
+from traduzioni import LABELS
 import os
 import datetime
 
@@ -29,6 +30,7 @@ def genera_report_pdf(
     descrizione_locale,
     output_path="report_microclima.pdf",
     data=None,
+    lingua="it",
 ):
     """
     Genera un report PDF con i risultati e due grafici riepilogativi.
@@ -39,34 +41,36 @@ def genera_report_pdf(
     grafico_avanzato_path = genera_grafico_pmv_ppd_avanzato(
         pmv, ppd, temp_aria, umidita
     )
+    testi = LABELS[lingua]
+    spiegazioni = spiegazioni_indici if lingua == "it" else spiegazioni_indici_en
 
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", "B", 14)
-    pdf.cell(0, 8, txt="Analisi del Microclima Ufficio", ln=True, align="C")
+    pdf.cell(0, 8, txt=testi["title"], ln=True, align="C")
     pdf.ln(3)
     pdf.set_font("Arial", size=10)
     pdf.line(10, pdf.get_y(), 200, pdf.get_y())
     pdf.ln(5)
 
     # Informazioni generali
-    pdf.cell(60, 8, txt=f"Sede: {sede}", border=0)
-    pdf.cell(80, 8, txt=f"Descrizione: {descrizione_locale}", border=0)
-    pdf.cell(50, 8, txt=f"Data: {data}", ln=True)
+    pdf.cell(60, 8, txt=f"{testi['location']}: {sede}", border=0)
+    pdf.cell(80, 8, txt=f"{testi['description']}: {descrizione_locale}", border=0)
+    pdf.cell(50, 8, txt=f"{testi['date']}: {data}", ln=True)
     pdf.ln(3)
 
     # Parametri ambientali
-    pdf.cell(0, 8, txt="Parametri ambientali:", ln=True)
+    pdf.cell(0, 8, txt=testi["sidebar_header"] + ":", ln=True)
 
     labels = [
-        "Temperatura aria (°C):",
-        "Temperatura radiante (°C):",
-        "Velocità aria (m/s):",
-        "Umidità relativa (%):",
-        "Metabolismo (Met):",
-        "Isolamento termico (Clo):",
-        "Sede:",
-        "Descrizione del locale:",
+        testi["air_temp"],
+        testi["rad_temp"],
+        testi["air_speed"],
+        testi["humidity"],
+        testi["metabolism"],
+        testi["insulation"],
+        testi["location"] + ":",
+        testi["description"] + ":",
     ]
     values = [
         temp_aria,
@@ -86,14 +90,14 @@ def genera_report_pdf(
     pdf.ln(5)
 
     # Risultati
-    pdf.cell(0, 8, txt="Risultati calcolati:", ln=True)
-    pdf.cell(95, 8, txt="Indice PMV:")
+    pdf.cell(0, 8, txt=testi["results"] + ":", ln=True)
+    pdf.cell(95, 8, txt=testi["pmv"])
     pdf.cell(95, 8, txt=f"{pmv:.2f}", ln=True)
-    pdf.cell(95, 8, txt="Indice PPD:")
+    pdf.cell(95, 8, txt=testi["ppd"])
     pdf.cell(95, 8, txt=f"{ppd:.2f}%", ln=True)
-    pdf.multi_cell(0, 8, txt=spiegazioni_indici["pmv"])
+    pdf.multi_cell(0, 8, txt=spiegazioni["pmv"])
     pdf.ln(1)
-    pdf.multi_cell(0, 8, txt=spiegazioni_indici["ppd"])
+    pdf.multi_cell(0, 8, txt=spiegazioni["ppd"])
     pdf.ln(5)
 
     # Nuova pagina per il grafico
