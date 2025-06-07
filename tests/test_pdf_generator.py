@@ -10,6 +10,9 @@ import datetime
 import tempfile
 
 import grafici
+import pdf_generator
+from fpdf import FPDF
+import pytest
 
 from pdf_generator import genera_report_pdf
 
@@ -110,3 +113,24 @@ def test_pdf_has_two_pages(tmp_path):
 
     assert content.count(b"/Type /Page") >= 2
     os.remove(pdf)
+
+
+def test_pdf_generation_error(tmp_path, monkeypatch):
+    def fake_output(self, *args, **kwargs):
+        raise IOError("fail")
+
+    monkeypatch.setattr(FPDF, "output", fake_output)
+    with pytest.raises(pdf_generator.PdfGenerationError):
+        genera_report_pdf(
+            25.0,
+            25.0,
+            0.1,
+            50.0,
+            1.2,
+            0.5,
+            0.0,
+            5.0,
+            "Sede",
+            "Locale",
+            output_path=str(tmp_path / "out.pdf"),
+        )

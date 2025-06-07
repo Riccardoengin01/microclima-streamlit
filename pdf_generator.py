@@ -12,6 +12,10 @@ import os
 import datetime
 
 
+class PdfGenerationError(Exception):
+    """Errore durante la generazione del report PDF."""
+
+
 def genera_report_pdf(
     temp_aria,
     temp_radiante,
@@ -32,9 +36,7 @@ def genera_report_pdf(
     if data is None:
         data = datetime.date.today()
     grafico_path = genera_grafico_pmv_ppd(pmv, ppd)
-    grafico_avanzato_path = genera_grafico_pmv_ppd_avanzato(
-        pmv, ppd, temp_aria, umidita
-    )
+    grafico_avanzato_path = genera_grafico_pmv_ppd_avanzato(pmv, ppd, temp_aria, umidita)
 
     pdf = FPDF()
     pdf.add_page()
@@ -119,7 +121,10 @@ def genera_report_pdf(
     pdf.cell(0, 8, txt="Firma del responsabile: ____________________", ln=True)
 
     # Salva il PDF
-    pdf.output(output_path)
+    try:
+        pdf.output(output_path)
+    except (IOError, OSError) as exc:
+        raise PdfGenerationError(f"Impossibile scrivere il file {output_path}") from exc
 
     # Rimuove i file temporanei dei grafici
     for path in (grafico_path, grafico_avanzato_path):

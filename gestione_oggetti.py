@@ -13,6 +13,11 @@ import datetime
 from pathlib import Path
 from typing import Dict, List, Optional
 
+
+class CSVFileError(Exception):
+    """Errore durante la lettura o scrittura dei file CSV."""
+
+
 CAMPI_ATTIVI = [
     "id",
     "villa",
@@ -32,21 +37,25 @@ def _leggi_csv(percorso: Path, campi: List[str]) -> List[Dict[str, str]]:
     """Legge il file CSV e restituisce le righe come lista di dizionari."""
     if not percorso.exists():
         return []
-    with percorso.open(newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f, fieldnames=campi)
-        return list(reader)
+    try:
+        with percorso.open(newline="", encoding="utf-8") as f:
+            reader = csv.DictReader(f, fieldnames=campi)
+            return list(reader)
+    except (IOError, OSError) as exc:
+        raise CSVFileError(f"Impossibile leggere il file {percorso}") from exc
 
 
 def _scrivi_csv(percorso: Path, campi: List[str], righe: List[Dict[str, str]]) -> None:
     """Scrive l'elenco di dizionari nel file CSV indicato."""
-    with percorso.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=campi)
-        writer.writerows(righe)
+    try:
+        with percorso.open("w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=campi)
+            writer.writerows(righe)
+    except (IOError, OSError) as exc:
+        raise CSVFileError(f"Impossibile scrivere il file {percorso}") from exc
 
 
-def _prossimo_id(
-    attivi: List[Dict[str, str]], archivio: List[Dict[str, str]], villa: str
-) -> str:
+def _prossimo_id(attivi: List[Dict[str, str]], archivio: List[Dict[str, str]], villa: str) -> str:
     """Calcola il prossimo ID disponibile per la villa specificata."""
     massimo = 0
     for riga in attivi + archivio:
@@ -88,9 +97,7 @@ def inserisci_oggetto(
     return nuovo_id
 
 
-def cerca_per_id(
-    identificativo: str, path_attivi: str = "oggetti_attivi.csv"
-) -> Optional[Dict[str, str]]:
+def cerca_per_id(identificativo: str, path_attivi: str = "oggetti_attivi.csv") -> Optional[Dict[str, str]]:
     pa = Path(path_attivi)
     attivi = _leggi_csv(pa, CAMPI_ATTIVI)
     for riga in attivi:
@@ -99,17 +106,13 @@ def cerca_per_id(
     return None
 
 
-def lista_per_villa(
-    villa: str, path_attivi: str = "oggetti_attivi.csv"
-) -> List[Dict[str, str]]:
+def lista_per_villa(villa: str, path_attivi: str = "oggetti_attivi.csv") -> List[Dict[str, str]]:
     pa = Path(path_attivi)
     attivi = _leggi_csv(pa, CAMPI_ATTIVI)
     return [r for r in attivi if r.get("villa") == villa]
 
 
-def lista_per_proprietario(
-    proprietario: str, path_attivi: str = "oggetti_attivi.csv"
-) -> List[Dict[str, str]]:
+def lista_per_proprietario(proprietario: str, path_attivi: str = "oggetti_attivi.csv") -> List[Dict[str, str]]:
     pa = Path(path_attivi)
     attivi = _leggi_csv(pa, CAMPI_ATTIVI)
     return [r for r in attivi if r.get("proprietario") == proprietario]
