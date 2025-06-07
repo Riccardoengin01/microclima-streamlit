@@ -95,6 +95,8 @@ if inputs["submit"]:
         ppd,
         inputs["sede"],
         inputs["descrizione_locale"],
+        inputs["commento_responsabile"],
+        inputs["firma_responsabile"],
         output_path=report_name,
         data=inputs["data"],
         lingua=inputs["lingua"],
