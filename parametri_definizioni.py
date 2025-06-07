@@ -38,6 +38,12 @@ parametri_definizioni = {
     Valori tipici:
     - 0.5 Clo (abbigliamento leggero)
     - 1.0 Clo (abbigliamento invernale).""",
+    "illuminazione": """**Illuminazione (lux)**:
+    La quantità di luce presente nell'ambiente misurata in lux.
+    Un'illuminazione adeguata migliora il comfort visivo.""",
+    "impatto_acustico": """**Impatto acustico (dB)**:
+    Il livello di rumore nell'ambiente espresso in decibel.
+    Rumori eccessivi possono provocare disagio e stress.""",
 }
 
 # Detailed parameter definitions in English
@@ -67,4 +73,10 @@ parametri_definizioni_en = {
     Typical values:
     - 0.5 Clo (light clothing)
     - 1.0 Clo (winter clothing).""",
+    "illuminazione": """**Lighting (lux)**:
+    The amount of light in the environment measured in lux.
+    Proper lighting improves visual comfort.""",
+    "impatto_acustico": """**Noise impact (dB)**:
+    The noise level in the environment expressed in decibels.
+    Excessive noise can cause discomfort and stress.""",
 }

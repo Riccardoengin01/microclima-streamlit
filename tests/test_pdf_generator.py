@@ -39,6 +39,8 @@ def test_pdf_generation_cleanup(tmp_path, monkeypatch):
         50.0,
         1.2,
         0.5,
+        500.0,
+        45.0,
         0.0,
         5.0,
         "Sede di test",
@@ -63,6 +65,8 @@ def test_pdf_contains_explanations(tmp_path):
         50.0,
         1.2,
         0.5,
+        500.0,
+        45.0,
         0.0,
         5.0,
         "Sede di test",
@@ -88,6 +92,8 @@ def test_pdf_contains_explanations(tmp_path):
     assert "Il PMV \\(Predicted Mean Vote\\)" in extracted
     assert "Il PPD \\(Predicted Percentage of Dissatisfied\\)" in extracted
     assert "Data: 2024-01-01" in extracted
+    assert "Illuminazione" in extracted
+    assert "Impatto acustico" in extracted
     os.remove(pdf)
 
 
@@ -100,6 +106,8 @@ def test_pdf_has_two_pages(tmp_path):
         50.0,
         1.2,
         0.5,
+        500.0,
+        45.0,
         0.0,
         5.0,
         "Sede di test",
@@ -128,6 +136,8 @@ def test_pdf_generation_error(tmp_path, monkeypatch):
             50.0,
             1.2,
             0.5,
+            500.0,
+            45.0,
             0.0,
             5.0,
             "Sede",

@@ -86,6 +86,16 @@ def setup_layout():
     )
     st.sidebar.caption(definizioni["isolamento"])
 
+    illuminazione = st.sidebar.number_input(
+        testi["lighting"], min_value=0.0, max_value=2000.0, value=500.0, step=1.0
+    )
+    st.sidebar.caption(definizioni["illuminazione"])
+
+    impatto_acustico = st.sidebar.number_input(
+        testi["noise"], min_value=30.0, max_value=120.0, value=50.0, step=1.0
+    )
+    st.sidebar.caption(definizioni["impatto_acustico"])
+
     submit = st.sidebar.button(testi["submit"])
 
     return {
@@ -97,6 +107,8 @@ def setup_layout():
         "umidita": umidita,
         "metabolismo": metabolismo,
         "isolamento": isolamento,
+        "illuminazione": illuminazione,
+        "impatto_acustico": impatto_acustico,
         "data": data,
         "submit": submit,
         "lingua": lang_code,
