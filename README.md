@@ -89,3 +89,7 @@ I test andrebbero avviati solo dopo aver controllato il codice con `black` e
    ```bash
    pytest
    ```
+
+## Integrazione continua
+I test e i controlli di formattazione vengono eseguiti automaticamente
+tramite GitHub Actions ad ogni push o pull request.

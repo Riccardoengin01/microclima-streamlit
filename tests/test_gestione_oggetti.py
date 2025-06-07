@@ -31,8 +31,12 @@ def leggi(path: Path, campi):
 def test_id_progressivo(tmp_path):
     active = tmp_path / "attivi.csv"
     archive = tmp_path / "archivio.csv"
-    id1 = inserisci_oggetto("1", "Mario", "Borsa", path_attivi=str(active), path_archivio=str(archive))
-    id2 = inserisci_oggetto("2", "Luca", "Chiavi", path_attivi=str(active), path_archivio=str(archive))
+    id1 = inserisci_oggetto(
+        "1", "Mario", "Borsa", path_attivi=str(active), path_archivio=str(archive)
+    )
+    id2 = inserisci_oggetto(
+        "2", "Luca", "Chiavi", path_attivi=str(active), path_archivio=str(archive)
+    )
     assert id1 == "001-VL1"
     assert id2 == "002-VL2"
 
@@ -40,7 +44,9 @@ def test_id_progressivo(tmp_path):
 def test_ricerca_e_lista(tmp_path):
     active = tmp_path / "attivi.csv"
     archive = tmp_path / "archivio.csv"
-    oid = inserisci_oggetto("1", "Mario", "Borsa", path_attivi=str(active), path_archivio=str(archive))
+    oid = inserisci_oggetto(
+        "1", "Mario", "Borsa", path_attivi=str(active), path_archivio=str(archive)
+    )
     assert cerca_per_id(oid, str(active))["proprietario"] == "Mario"
     assert lista_per_villa("1", str(active))[0]["id"] == oid
     assert lista_per_proprietario("Mario", str(active))[0]["id"] == oid
@@ -49,7 +55,9 @@ def test_ricerca_e_lista(tmp_path):
 def test_ritiro(tmp_path):
     active = tmp_path / "attivi.csv"
     archive = tmp_path / "archivio.csv"
-    oid = inserisci_oggetto("1", "Mario", "Borsa", path_attivi=str(active), path_archivio=str(archive))
+    oid = inserisci_oggetto(
+        "1", "Mario", "Borsa", path_attivi=str(active), path_archivio=str(archive)
+    )
     assert ritiro_oggetto(oid, "MarioR", str(active), str(archive))
     attivi = leggi(
         active,
@@ -84,7 +92,9 @@ def test_ritiro(tmp_path):
 def test_archiviazione_manuale(tmp_path):
     active = tmp_path / "attivi.csv"
     archive = tmp_path / "archivio.csv"
-    oid = inserisci_oggetto("1", "Mario", "Borsa", path_attivi=str(active), path_archivio=str(archive))
+    oid = inserisci_oggetto(
+        "1", "Mario", "Borsa", path_attivi=str(active), path_archivio=str(archive)
+    )
     assert archivia_oggetto(oid, "Perso", str(active), str(archive))
     attivi = leggi(
         active,
@@ -118,7 +128,9 @@ def test_archiviazione_manuale(tmp_path):
 def test_controllo_scadenze(tmp_path):
     active = tmp_path / "attivi.csv"
     archive = tmp_path / "archivio.csv"
-    inserisci_oggetto("1", "Mario", "Borsa", path_attivi=str(active), path_archivio=str(archive))
+    inserisci_oggetto(
+        "1", "Mario", "Borsa", path_attivi=str(active), path_archivio=str(archive)
+    )
     rows = leggi(
         active,
         [
@@ -130,7 +142,9 @@ def test_controllo_scadenze(tmp_path):
             "scadenza_giorni",
         ],
     )
-    rows[0]["data_inserimento"] = (datetime.date.today() - datetime.timedelta(days=31)).isoformat()
+    rows[0]["data_inserimento"] = (
+        datetime.date.today() - datetime.timedelta(days=31)
+    ).isoformat()
     with active.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(
             f,
