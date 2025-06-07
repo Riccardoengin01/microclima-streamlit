@@ -31,6 +31,7 @@ LABELS = {
         "illum_ok": "Illuminazione adeguata",
         "noise_ok": "Rumore nei limiti",
         "out_of_range": "fuori soglia",
+        "page": "Pagina",
     },
     "en": {
         "title": "Office Environmental Analysis",
@@ -56,5 +57,6 @@ LABELS = {
         "illum_ok": "Lighting adequate",
         "noise_ok": "Noise within limits",
         "out_of_range": "out of range",
+        "page": "Page",
     },
 }

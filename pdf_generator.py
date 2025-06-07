@@ -21,6 +21,26 @@ class PdfGenerationError(Exception):
     """Errore durante la generazione del report PDF."""
 
 
+class MicroclimaPDF(FPDF):
+    """PDF personalizzato con intestazione e numerazione pagine."""
+
+    def __init__(self, titolo, etichetta_pagina="Pagina"):
+        super().__init__()
+        self.titolo = titolo
+        self.etichetta_pagina = etichetta_pagina
+
+    def header(self):
+        self.set_font("Arial", "B", 12)
+        self.cell(0, 10, txt=self.titolo, ln=True, align="C")
+        self.ln(2)
+
+    def footer(self):
+        self.set_y(-15)
+        self.set_font("Arial", "I", 8)
+        pagina = f"{self.etichetta_pagina} {self.page_no()}"
+        self.cell(0, 10, pagina, align="C")
+
+
 def genera_report_pdf(
     temp_aria,
     temp_radiante,
@@ -55,11 +75,8 @@ def genera_report_pdf(
     testi = LABELS[lingua]
     spiegazioni = spiegazioni_indici if lingua == "it" else spiegazioni_indici_en
 
-    pdf = FPDF()
+    pdf = MicroclimaPDF(testi["title"], testi.get("page", "Pagina"))
     pdf.add_page()
-    pdf.set_font("Arial", "B", 14)
-    pdf.cell(0, 8, txt=testi["title"], ln=True, align="C")
-    pdf.ln(3)
     pdf.set_font("Arial", size=10)
     pdf.line(10, pdf.get_y(), 200, pdf.get_y())
     pdf.ln(5)
