@@ -16,6 +16,8 @@ import pytest
 import PyPDF2
 
 from pdf_generator import genera_report_pdf
+from spiegazioni_indici import spiegazioni_indici, spiegazioni_indici_en
+from traduzioni import LABELS
 
 
 def test_pdf_generation_cleanup(tmp_path, monkeypatch):
@@ -46,8 +48,8 @@ def test_pdf_generation_cleanup(tmp_path, monkeypatch):
         5.0,
         "Sede di test",
         "Locale di prova",
-        "Illuminazione adeguata",
-        "Rumore nei limiti",
+        LABELS["it"]["illum_ok"],
+        LABELS["it"]["noise_ok"],
         data=datetime.date(2024, 1, 1),
         output_path=str(output_file),
     )
@@ -59,7 +61,14 @@ def test_pdf_generation_cleanup(tmp_path, monkeypatch):
     os.remove(pdf)
 
 
-def test_pdf_contains_explanations(tmp_path):
+@pytest.mark.parametrize(
+    "lang,spiegazioni",
+    [
+        ("it", spiegazioni_indici),
+        ("en", spiegazioni_indici_en),
+    ],
+)
+def test_pdf_contains_explanations(tmp_path, lang, spiegazioni):
     output_file = tmp_path / "report_microclima.pdf"
     pdf = genera_report_pdf(
         25.0,
@@ -74,10 +83,11 @@ def test_pdf_contains_explanations(tmp_path):
         5.0,
         "Sede di test",
         "Locale di prova",
-        "Illuminazione adeguata",
-        "Rumore nei limiti",
+        LABELS[lang]["illum_ok"],
+        LABELS[lang]["noise_ok"],
         data=datetime.date(2024, 1, 1),
         output_path=str(output_file),
+        lingua=lang,
     )
     assert pdf == str(output_file)
     with open(pdf, "rb") as file:
@@ -94,13 +104,19 @@ def test_pdf_contains_explanations(tmp_path):
         except Exception:
             continue
 
-    assert "Il PMV \\(Predicted Mean Vote\\)" in extracted
-    assert "Il PPD \\(Predicted Percentage of Dissatisfied\\)" in extracted
-    assert "Data: 2024-01-01" in extracted
-    assert "Illuminazione" in extracted
-    assert "Impatto acustico" in extracted
-    assert "Illuminazione adeguata" in extracted
-    assert "Rumore nei limiti" in extracted
+    pmv_head = (
+        (spiegazioni["pmv"].split(")")[0] + ")").replace("(", "\\(").replace(")", "\\)")
+    )
+    ppd_head = (
+        (spiegazioni["ppd"].split(")")[0] + ")").replace("(", "\\(").replace(")", "\\)")
+    )
+    assert pmv_head in extracted
+    assert ppd_head in extracted
+    assert f"{LABELS[lang]['date']}: 2024-01-01" in extracted
+    assert LABELS[lang]["lighting"].split()[0] in extracted
+    assert LABELS[lang]["noise"].split()[0] in extracted
+    assert LABELS[lang]["illum_ok"] in extracted
+    assert LABELS[lang]["noise_ok"] in extracted
     os.remove(pdf)
 
 
@@ -130,7 +146,8 @@ def test_pdf_has_three_pages(tmp_path):
     os.remove(pdf)
 
 
-def test_graphs_on_single_page(tmp_path):
+@pytest.mark.parametrize("lang", ["it", "en"])
+def test_graphs_on_single_page(tmp_path, lang):
     output_file = tmp_path / "report_microclima.pdf"
     pdf = genera_report_pdf(
         25.0,
@@ -147,14 +164,15 @@ def test_graphs_on_single_page(tmp_path):
         "Locale di prova",
         data=datetime.date(2024, 1, 1),
         output_path=str(output_file),
+        lingua=lang,
     )
     reader = PyPDF2.PdfReader(pdf)
     assert len(reader.pages) >= 3
     page_two = reader.pages[1].extract_text()
-    assert "Grafici PMV-PPD" in page_two
-    assert "Firma del responsabile" in page_two
+    assert LABELS[lang]["charts_title"] in page_two
+    assert LABELS[lang]["manager_signature"] in page_two
     page_three = reader.pages[2].extract_text()
-    assert "Illuminazione e Rumore" in page_three
+    assert LABELS[lang]["light_noise_title"] in page_three
     os.remove(pdf)
 
 
