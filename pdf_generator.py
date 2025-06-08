@@ -135,7 +135,7 @@ def genera_report_pdf(
     # Nuova pagina per il grafico
     pdf.add_page()
     pdf.set_font("Arial", "B", 14)
-    pdf.cell(0, 8, txt="Grafici PMV-PPD", ln=True, align="C")
+    pdf.cell(0, 8, txt=testi["charts_title"], ln=True, align="C")
     pdf.ln(3)
     pdf.set_font("Arial", size=10)
     pdf.line(10, pdf.get_y(), 200, pdf.get_y())
@@ -150,7 +150,7 @@ def genera_report_pdf(
     pdf.set_y(image_y + 70)
 
     pdf.set_font("Arial", "B", 10)
-    pdf.cell(0, 8, txt="Commenti del responsabile:", ln=True)
+    pdf.cell(0, 8, txt=testi["manager_comments"] + ":", ln=True)
     if commento_responsabile:
         pdf.multi_cell(0, 8, txt=commento_responsabile)
     else:
@@ -158,7 +158,7 @@ def genera_report_pdf(
     pdf.cell(
         0,
         8,
-        txt=f"Firma del responsabile: {firma_responsabile}",
+        txt=f"{testi['manager_signature']}: {firma_responsabile}",
         ln=True,
     )
     pdf.ln(20)
@@ -168,7 +168,7 @@ def genera_report_pdf(
         pdf.add_page()
 
     pdf.set_font("Arial", "B", 14)
-    pdf.cell(0, 8, txt="Illuminazione e Rumore", ln=True, align="C")
+    pdf.cell(0, 8, txt=testi["light_noise_title"], ln=True, align="C")
     pdf.ln(3)
     pdf.set_font("Arial", size=10)
     pdf.line(10, pdf.get_y(), 200, pdf.get_y())
