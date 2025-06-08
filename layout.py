@@ -107,8 +107,8 @@ def setup_layout():
     else:
         st.sidebar.caption(f"Recommended range {db_min}-{db_max} dB")
 
-    commento_responsabile = st.sidebar.text_area("Commento del responsabile")
-    firma_responsabile = st.sidebar.text_input("Firma del responsabile")
+    commento_responsabile = st.sidebar.text_area(testi["manager_comments"])
+    firma_responsabile = st.sidebar.text_input(testi["manager_signature"])
 
     submit = st.sidebar.button(testi["submit"])
 

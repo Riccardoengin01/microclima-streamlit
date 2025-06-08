@@ -9,7 +9,7 @@
 LABELS = {
     "it": {
         "title": "Analisi ambientale ufficio",
-        "subheader": "",
+        "subheader": "Calcolo indici di comfort termico",
         "sidebar_header": "Inserisci i parametri ambientali",
         "location": "Sede",
         "description": "Descrizione del locale",
@@ -31,11 +31,15 @@ LABELS = {
         "illum_ok": "Illuminazione adeguata",
         "noise_ok": "Rumore nei limiti",
         "out_of_range": "fuori soglia",
+        "charts_title": "Grafici PMV-PPD",
+        "manager_comments": "Commenti del responsabile",
+        "manager_signature": "Firma del responsabile",
+        "light_noise_title": "Illuminazione e Rumore",
         "page": "Pagina",
     },
     "en": {
         "title": "Office Environmental Analysis",
-        "subheader": "",
+        "subheader": "Thermal comfort indices calculation",
         "sidebar_header": "Enter environmental parameters",
         "location": "Location",
         "description": "Room description",
@@ -57,6 +61,10 @@ LABELS = {
         "illum_ok": "Lighting adequate",
         "noise_ok": "Noise within limits",
         "out_of_range": "out of range",
+        "charts_title": "PMV-PPD charts",
+        "manager_comments": "Manager comments",
+        "manager_signature": "Manager signature",
+        "light_noise_title": "Lighting and Noise",
         "page": "Page",
     },
 }

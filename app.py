@@ -88,9 +88,9 @@ if inputs["submit"]:
     )
 
     col1, col2, col3 = st.columns(3)
-    col1.image(grafico_base, caption="Relazione tra PMV e PPD")
-    col2.image(grafico_avanzato, caption="Grafico avanzato PMV-PPD")
-    col3.image(grafico_lux_db, caption="Illuminazione e Rumore")
+    col1.image(grafico_base, caption=testi["charts_title"])
+    col2.image(grafico_avanzato, caption=testi["charts_title"])
+    col3.image(grafico_lux_db, caption=testi["light_noise_title"])
 
     for path in (grafico_base, grafico_avanzato, grafico_lux_db):
         try:
