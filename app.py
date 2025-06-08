@@ -39,6 +39,8 @@ def calcola_pmv_ppd(temp_aria, temp_radiante, vel_aria, umidita, clo, met):
 def index():
     """Gestisce il form e mostra i risultati del calcolo."""
     result = None
+    illuminazione = None
+    impatto_acustico = None
     if request.method == "POST":
         try:
             temp_aria = float(request.form.get("temp_aria", 0))
@@ -47,12 +49,19 @@ def index():
             vel_aria = float(request.form.get("vel_aria", 0))
             clo = float(request.form.get("clo", 0))
             met = float(request.form.get("met", 0))
+            illuminazione = float(request.form.get("illuminazione", 0))
+            impatto_acustico = float(request.form.get("impatto_acustico", 0))
             result = calcola_pmv_ppd(
                 temp_aria, temp_radiante, vel_aria, umidita, clo, met
             )
         except ValueError:
             result = None
-    return render_template("index.html", result=result)
+    return render_template(
+        "index.html",
+        result=result,
+        illuminazione=illuminazione,
+        impatto_acustico=impatto_acustico,
+    )
 
 
 if __name__ == "__main__":

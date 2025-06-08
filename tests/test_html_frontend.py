@@ -11,6 +11,12 @@ def test_index_page():
     client = app.test_client()
     response = client.get("/")
     assert response.status_code == 200
+    html = response.data.decode()
+    assert 'name="illuminazione"' in html
+    assert 'name="impatto_acustico"' in html
 
-    response_post = client.post("/")
+    response_post = client.post(
+        "/",
+        data={"illuminazione": "500", "impatto_acustico": "40"},
+    )
     assert response_post.status_code == 200

@@ -14,8 +14,21 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def index():
     """Rende la pagina principale e gestisce il form."""
+    illuminazione = None
+    impatto_acustico = None
     if request.method == "POST":
-        return render_template("index.html", message="Dati ricevuti")
+        try:
+            illuminazione = float(request.form.get("illuminazione", 0))
+            impatto_acustico = float(request.form.get("impatto_acustico", 0))
+            message = "Dati ricevuti"
+        except ValueError:
+            message = "Valori non validi"
+        return render_template(
+            "index.html",
+            message=message,
+            illuminazione=illuminazione,
+            impatto_acustico=impatto_acustico,
+        )
     return render_template("index.html")
 
 
