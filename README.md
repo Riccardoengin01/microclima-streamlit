@@ -136,6 +136,11 @@ This application calculates the PMV (Predicted Mean Vote) and PPD (Predicted Per
 - Generation of a PDF report with parameters and charts.
 - The PDF also includes an advanced plot with PMV vs temperature and PPD vs humidity.
 - Environmental parameters check with predefined limits.
+- Recommended ranges are 300-1000 lux for lighting and 30-55 dB for noise.
+
+### Environmental parameters
+- Adequate lighting improves concentration and reduces eye strain.
+- Excessive noise can cause stress and divert attention.
 
 ### System Requirements
 - **Python 3.8+**
