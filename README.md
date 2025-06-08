@@ -5,6 +5,7 @@
 
 ## Descrizione
 Questa applicazione calcola gli indici PMV (Predicted Mean Vote) e PPD (Predicted Percentage of Dissatisfied), utilizzati per valutare il comfort termico in ambienti chiusi. I calcoli sfruttano la libreria **pythermalcomfort** e rispettano le normative UNI EN ISO 7730 e il D.Lgs. 81/08.
+L'interfaccia principale è un'app Flask definita in `app.py`; è disponibile anche una versione Streamlit.
 ---
 
 ## Funzionalità
@@ -50,9 +51,14 @@ Questa applicazione calcola gli indici PMV (Predicted Mean Vote) e PPD (Predicte
    pip install -r requirements-dev.txt
    ```
 
-4. Avvia l'applicazione:
+4. Avvia l'interfaccia Flask:
    ```bash
-   streamlit run app.py
+   python app.py
+   ```
+
+5. Oppure avvia la versione Streamlit:
+   ```bash
+   streamlit run streamlit_main.py
    ```
 
 ### Frontend HTML (alternativa)
@@ -129,6 +135,7 @@ tramite GitHub Actions ad ogni push o pull request.
 
 ### Description
 This application calculates the PMV (Predicted Mean Vote) and PPD (Predicted Percentage of Dissatisfied) indices used to evaluate indoor thermal comfort. Calculations rely on the **pythermalcomfort** library and comply with UNI EN ISO 7730 and Italian D.Lgs. 81/08.
+The main interface is a Flask app defined in `app.py`; a Streamlit version is also available.
 
 ### Features
 - Calculation of PMV and PPD indices.
@@ -168,9 +175,14 @@ This application calculates the PMV (Predicted Mean Vote) and PPD (Predicted Per
    pip install -r requirements-dev.txt
    ```
 
-4. Run the application:
+4. Start the Flask interface:
    ```bash
-   streamlit run app.py
+   python app.py
+   ```
+
+5. Or launch the Streamlit version:
+   ```bash
+   streamlit run streamlit_main.py
    ```
 
 ### HTML Frontend (alternative)
