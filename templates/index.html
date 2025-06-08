@@ -61,7 +61,27 @@
         <strong>PMV:</strong> {{ '%.2f'|format(result['pmv']) }}<br>
         <strong>PPD:</strong> {{ '%.2f'|format(result['ppd']) }}%
     </div>
+    <div class="card card-body mt-3">
+        <h5>Spiegazioni</h5>
+        <p>{{ spiegazioni['pmv'] }}</p>
+        <p>{{ spiegazioni['ppd'] }}</p>
+        <a class="btn btn-secondary" href="{{ url_for('download', temp_aria=temp_aria, temp_radiante=temp_radiante, vel_aria=vel_aria, umidita=umidita, clo=clo, met=met, illuminazione=illuminazione, impatto_acustico=impatto_acustico) }}">Scarica Report PDF</a>
+    </div>
     {% endif %}
+
+    <div class="mt-5">
+        <h5>Definizioni parametri</h5>
+        <ul>
+            <li>{{ definizioni['temp_aria'] }}</li>
+            <li>{{ definizioni['temp_radiante'] }}</li>
+            <li>{{ definizioni['vel_aria'] }}</li>
+            <li>{{ definizioni['umidita'] }}</li>
+            <li>{{ definizioni['metabolismo'] }}</li>
+            <li>{{ definizioni['isolamento'] }}</li>
+            <li>{{ definizioni['illuminazione'] }}</li>
+            <li>{{ definizioni['impatto_acustico'] }}</li>
+        </ul>
+    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>

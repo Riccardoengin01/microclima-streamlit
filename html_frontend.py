@@ -7,6 +7,8 @@
 """Semplice frontend HTML basato su Flask."""
 
 from flask import Flask, render_template, request
+from spiegazioni_indici import spiegazioni_indici
+from parametri_definizioni import parametri_definizioni
 
 app = Flask(__name__)
 
@@ -28,8 +30,14 @@ def index():
             message=message,
             illuminazione=illuminazione,
             impatto_acustico=impatto_acustico,
+            spiegazioni=spiegazioni_indici,
+            definizioni=parametri_definizioni,
         )
-    return render_template("index.html")
+    return render_template(
+        "index.html",
+        spiegazioni=spiegazioni_indici,
+        definizioni=parametri_definizioni,
+    )
 
 
 if __name__ == "__main__":
