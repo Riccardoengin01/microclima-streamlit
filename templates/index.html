@@ -1,19 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Analisi ambientale ufficio</title>
+    <title>Calcolo PMV e PPD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 </head>
-<body>
-    <h1>Analisi ambientale ufficio</h1>
-    {% if message %}
-    <p>{{ message }}</p>
+<body class="bg-light">
+<div class="container py-5">
+    <h1 class="mb-4">Calcolo PMV e PPD</h1>
+    <div class="card p-4">
+        <form method="post">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Temperatura aria (°C)
+                        <input type="number" step="0.1" name="temp_aria" class="form-control" required>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Temperatura radiante (°C)
+                        <input type="number" step="0.1" name="temp_radiante" class="form-control" required>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Umidità relativa (%)
+                        <input type="number" step="0.1" name="umidita" class="form-control" required>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Velocità aria (m/s)
+                        <input type="number" step="0.1" name="vel_aria" class="form-control" required>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">CLO
+                        <input type="number" step="0.1" name="clo" class="form-control" required>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">MET
+                        <input type="number" step="0.1" name="met" class="form-control" required>
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Calcola</button>
+        </form>
+    </div>
+    {% if result %}
+    <div class="alert alert-info mt-4">
+        <strong>PMV:</strong> {{ '%.2f'|format(result['pmv']) }}<br>
+        <strong>PPD:</strong> {{ '%.2f'|format(result['ppd']) }}%
+    </div>
     {% endif %}
-    <form method="post">
-        <label>Location <input type="text" name="sede"></label><br>
-        <label>Description <input type="text" name="descrizione"></label><br>
-        <label>Temperature Air <input type="number" step="0.1" name="temp_aria"></label><br>
-        <button type="submit">Submit</button>
-    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
