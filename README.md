@@ -59,6 +59,8 @@ L'interfaccia principale è un'app Flask definita in `app.py`; è disponibile an
 5. Oppure avvia la versione Streamlit:
    ```bash
    streamlit run streamlit_main.py
+   # oppure
+   streamlit run streamlit_app.py
    ```
 
 ### Frontend HTML (alternativa)
@@ -183,6 +185,8 @@ The main interface is a Flask app defined in `app.py`; a Streamlit version is al
 5. Or launch the Streamlit version:
    ```bash
    streamlit run streamlit_main.py
+   # or
+   streamlit run streamlit_app.py
    ```
 
 ### HTML Frontend (alternative)
