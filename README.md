@@ -72,6 +72,14 @@ python html_frontend.py
 
 Per cambiare l'interfaccia modifica il file `templates/index.html` e riavvia il server dopo aver salvato le modifiche.
 
+
+Le definizioni dei parametri mostrati nella pagina provengono dal file `parametri_definizioni.py`.
+Le spiegazioni di PMV e PPD sono contenute in `spiegazioni_indici.py`.
+Dopo il calcolo compare il pulsante **Scarica Report PDF**, gestito dall'endpoint `/download` che restituisce il documento.
+Esempio di richiesta:
+```bash
+curl "http://localhost:5000/download?temp_aria=25&temp_radiante=25&vel_aria=0.1&umidita=50&clo=0.5&met=1.2&illuminazione=500&impatto_acustico=40" -o report.pdf
+```
 ## Ambiente di sviluppo
 Per preparare l'ambiente prima di avviare i test installa tutte le dipendenze
 Python:
@@ -198,6 +206,14 @@ python html_frontend.py
 
 To change the interface edit `templates/index.html` and restart the server after saving.
 
+
+Parameter definitions displayed in the page are stored in `parametri_definizioni.py`.
+Explanations for PMV and PPD are provided in `spiegazioni_indici.py`.
+After submitting the form a **Download PDF Report** button appears; it calls the `/download` endpoint to generate the document.
+Example request:
+```bash
+curl "http://localhost:5000/download?temp_aria=25&temp_radiante=25&vel_aria=0.1&umidita=50&clo=0.5&met=1.2&illuminazione=500&impatto_acustico=40" -o report.pdf
+```
 ### Development environment
 Before running the tests install all Python dependencies:
 
